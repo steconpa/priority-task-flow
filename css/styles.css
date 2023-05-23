@@ -1,0 +1,363 @@
+html {
+  font-size: 16px;
+}
+
+* {
+  font-size: 1em;
+}
+
+body{
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  grid-template-areas: 
+    "header header header header"
+    "sidebar main main main"
+    "footer footer footer footer";
+  font-family: 'Noto Sans', sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+.header-curved {
+  grid-area: header;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: #43469a;
+  height: 25vh;
+  border-bottom-left-radius: 50% 10%;
+  border-bottom-right-radius: 50% 10%;
+}
+#img-logo{
+  margin-right: 15px;
+}
+
+.principal-tittle{
+  font-family: 'Indie Flower';
+  display: inline-flex;
+  font-size: 3em;
+  margin: 0px;
+}
+
+#principal-menu {
+  display: inline-flex;
+  align-self: center;
+  align-items: center;
+  padding-inline-start: 0px;
+  margin: 0;
+}
+
+#principal-menu img{
+  width: 16px;
+  height: 16px;
+}
+
+#principal-menu li {
+  position: relative;
+  cursor: pointer;
+  padding: 7px;
+  transition: transform 0.2s;
+}
+
+#principal-menu li::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color 0.2s;
+}
+
+#principal-menu li:hover::after {
+  background-color: whitesmoke; /* Color de la línea al hacer hover */
+}
+
+#principal-menu li:active {
+  transform: scale(1.1); /* Incremento de tamaño al hacer clic */
+}
+
+a {
+  scroll-behavior: smooth;
+}
+
+#principal-menu a {
+  color: inherit; /* Hereda el color del texto */
+  text-decoration: none; /* Elimina la subrayado del enlace */
+}
+
+.h2-tittle-section{
+  font-size: large;
+}
+
+.decoration-text{
+    font-family: 'Alex Brush', cursive;
+    font-size:larger;
+    letter-spacing: 1.5px ;
+    font-size: larger;
+}
+
+sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  padding-left: 5px;
+}
+
+details {
+  display: inline-block;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 5px;
+}
+
+details summary {
+  display: inline-block;
+  width: 100%;
+  padding: 8px 0px 8px 0px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.red-to-do-list-summary {
+  color: #870000;
+  background-color: #FFB4B0;
+}
+
+details#red-to-do-list-details[open] summary.red-to-do-list-summary {
+  color: #FFB4B0;
+  background-color:#870000;
+}
+
+.orange-to-do-list-summary {
+  background-color: #FEC595;
+  color: #4B2011;
+}
+
+details#orange-to-do-list-details[open] summary.orange-to-do-list-summary {
+  background-color: #FFA500;
+  color: #4B2011;
+}
+
+.yellow-to-do-list-summary {
+  background-color: #FFFFCC;
+  color: #626100;
+}
+
+details#yellow-to-do-list-details[open] summary.yellow-to-do-list-summary {
+  background-color:#FDFD66;
+  color: #4E4E26;
+}
+
+.blue-to-do-list-summary {
+  color: #43469A;
+  background-color: #8BD5F3;
+}
+
+details#blue-to-do-list-details[open] summary.blue-to-do-list-summary {
+  color: #D3F7FF;
+  background-color: #3D408D;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary::before {
+  content: '+';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  margin-right: 8px;
+  text-align: center;
+  line-height: 16px;
+  font-weight: bold;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+details#red-to-do-list-details summary.red-to-do-list-summary::before{
+  background-color: #870000;
+  color: #FFB4B0;
+}
+
+details#orange-to-do-list-details summary.orange-to-do-list-summary::before{
+  color: #FEC595;
+  background-color: #4B2011;
+}
+
+details#yellow-to-do-list-details summary.yellow-to-do-list-summary::before{
+  color: #FFFFCC;
+  background-color: #626100;
+}
+
+details#blue-to-do-list-details summary.blue-to-do-list-summary::before{
+  background-color: #43469A;
+  color: #8BD5F3;
+}
+
+details[open] summary::before {
+  content: '^';
+  transform: rotate(-180deg);
+}
+
+details#blue-to-do-list-details[open] summary.blue-to-do-list-summary::before{
+  color: #3D408D;
+  background-color: #D3F7FF;
+}
+
+details#yellow-to-do-list-details[open] summary.yellow-to-do-list-summary::before{
+  color:#FDFD66;
+  background-color: #4E4E26;
+}
+
+details#orange-to-do-list-details[open] summary.orange-to-do-list-summary::before{
+  color: #FFA500;
+  background-color: #4B2011;
+}
+
+details#red-to-do-list-details[open] summary.red-to-do-list-summary::before{
+  background-color: #FFB4B0;
+  color:#870000;
+}
+
+details ul {
+  padding: 7px;
+  margin: 0px;
+}
+
+details li.task-elementList{
+  display: flex;
+  align-items:baseline;
+  padding-bottom: 7px;
+  column-gap: 5px;
+}
+
+details button{
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  overflow: visible;
+}
+
+details li span{
+  flex-grow: 4;
+}
+
+details.custom-dropdown summary.current-button{
+  padding-bottom: 0px;
+}
+
+details.custom-dropdown summary.current-button::before{
+  content: none;
+  padding-bottom: 0px;
+}
+
+ul.dropdown-list{
+  padding: 0;
+}
+
+.changeClass-blueButton{
+    background-image: url('../icons/icons8-blue-circle-16.png');
+}
+
+.changeClass-redButton{
+  background-image: url('../icons/icons8-red-circle-16.png');
+}
+
+.changeClass-orangeButton{
+  background-image: url('../icons/icons8-orange-circle-16.png');
+}
+
+.changeClass-yellowButton{
+  background-image: url('../icons/icons8-yellow-circle-16.png');
+}
+
+.upArrow-button {
+  background-image: url('../icons/icons8-arriba-16.png');
+  position: relative;
+}
+
+.edit-item-button {
+  background-image: url('../icons/icons8-edit-item-16.png');
+  position: relative;
+  overflow: hidden;
+}
+
+main {
+  grid-area: main;
+}
+
+#focus-on-section{
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-button, 
+.add-new-task-button,
+.taskloader {
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  margin-right: 5px;
+  background-color: transparent;
+}
+
+.add-new-task-button{
+  background-image: url('../icons/icons8-agregar-icon-16.png');
+}
+
+
+.taskloader {
+  width: 32px;
+  height: 32px;
+  background-image: url('../icons/icons8-download-32.png');
+}
+
+.delete-button:hover {
+    color: red;
+}
+
+  footer {
+    grid-area: footer;
+    background-color: #f2f2f2;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+  
+  footer a {
+    color: #444;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+  
+  footer a:hover {
+    color: #0077b5;
+  }
+  
+  footer img {
+    margin-right: 10px;
+  }

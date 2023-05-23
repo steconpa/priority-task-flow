@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Priority Task Flow es una incleible aplicación de gestión de tareas diseñada para ayudarte a priorizar, organizar y mantener el enfoque en tus actividades diarias. Con una interfaz intuitiva y practica, Priority Task Flow te permite optimizar tu productividad y alcanzar tus objetivos de manera eficiente."
+    />
+    <meta property="og:title" content="Priority Task Flow" />
+    <meta
+      property="og:description"
+      content="Prioriza, organiza, concéntrate y que todo fluya con Priority Task Flow"
+    />
+    <meta property="og:image" content="images/ogImage.png" />
+    <meta name="author" content="Stevens Contreras" />
+    <meta name="email" content="stevens.contreras@uniminuto.edu.co" />
+    <meta name="profile" content="https://github.com/steconpa" />
+
+    <link rel="icon" href="icons/favicon.png" type="image/png" />
+    <link rel="shortcut icon" href="icons/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Indie+Flower&&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+
+    <title>Priority Task Flow</title>
+  </head>
+  <body>
+    <header class="header-curved" id="header-curved" role="banner">
+      <h1 class="principal-tittle">
+        <a id="img-logo" href="index.html"><img src="/icons/logo-flow.png" alt="" /></a>
+        Priority Task Flow
+      </h1>
+      <ul class="principal-menu" id="principal-menu">
+        <li>
+          <a href="#add-task-section" alt="Agregue las tareas pendientes">agregue</a>
+        </li><img src="icons/circulo-blanco-16.png">
+        <li><a href="#priority-sort-section">priorice</a></li><img src="icons/circulo-blanco-16.png">
+        <li><a href="#focus-on-section">enfoquese</a></li>
+      </ul>
+    </header>
+
+    <sidebar>
+      <section class="add-task" id="add-task-section">
+        <h2 class="h2-tittle-section">Agregue tareas</h2>
+        <form action="">
+          <input type="text" name="new-task-input" id="new-task-input" />
+          <button
+            type="submit"
+            class="add-new-task-button"
+            name="add-new-task-button"
+          ></button>
+        </form>
+      </section>
+
+      <section id="priority-sort-section" name="priority-sort-section">
+        <h2 class="h2-tittle-section">Priorice</h2>
+
+        <details id="red-to-do-list-details">
+          <summary class="red-to-do-list-summary">urgente + importante</summary>
+          <ul class="red-to-do-list" id="red-to-do-list"></ul>
+        </details>
+        
+        <details id="orange-to-do-list-details">
+          <summary class="orange-to-do-list-summary">importante + no urgente</summary>
+          <ul class="orange-to-do-list" name="orange-to-do-list"></ul>
+        </details>
+        
+        <details id="yellow-to-do-list-details">
+          <summary class="yellow-to-do-list-summary">urgente + no importante</summary>
+          <ul class="yellow-to-do-list" name="yellow-to-do-list"></ul>
+        </details>
+        
+        <details id="blue-to-do-list-details">
+          <summary class="blue-to-do-list-summary">pendientes priorizar</summary>
+          <ul class="blue-to-do-list" name="blue-to-do-list"></ul>
+        </details>
+      </section>
+
+      <section
+        id="completed-taskList-section"
+        name="completed-taskList-section"
+      >
+        <h2 class="h2-tittle-section">Tareas completadas:</h2>
+        <ul name="completed-taskList">
+          <li>Tarea 1</li>
+        </ul>
+      </section>
+    </sidebar>
+
+    <main>
+      <section id="focus-on-section" name="focus-on-section">
+        <h2 class="h2-tittle-section">
+          <button class="taskloader" id="taskloader"></button> Enfoquese en
+          seis:
+        </h2>
+        <ul name="focusOn-sixList"></ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>Elaborado por Stevens Contreras &nbsp;</p>
+      <p>
+        <a href="https://www.linkedin.com/in/stecop" target="_blank">
+          <img
+            src="icons/icons8-linkedin-96.png"
+            alt="Enlace a mi perfil de LinkedIn"
+        /></a>
+        <a href="https://github.com/steconpa" target="_blank">
+          <img
+            src="icons/icons8-github-96.png"
+            alt="Enlace a mi perfil de GitHub"
+        /></a>
+      </p>
+      <p>
+        Iconos de la página tomados de
+        <a href="https://icons8.com/" target="_blank">Icon8</a>
+      </p>
+    </footer>
+
+    <template id="blueListItem-newTask">
+      <li class="task-elementList">
+        <details class="custom-dropdown">
+          <summary class="current-button">
+            <button type="button" class="changeClass-blueButton" value="blue-to-do-list"></button>
+          </summary>
+          <ul class="dropdown-list">
+            <li>
+              <button type="button" class="changeClass-redButton" value="red-to-do-list"></button>
+            </li>
+            <li>
+              <button type="button" class="changeClass-orangeButton" value="orange-to-do-list"></button>
+            </li>
+            <li>
+              <button type="button" class="changeClass-yellowButton" value="yellow-to-do-list"></button>
+            </li>
+          </ul>
+        </details>
+        <span class="taskDescription"></span>
+        <button class="upArrow-button"></button>
+        <button class="edit-item-button"></button>
+      </li>
+    </template>
+
+    <template id="focusOn-ListItem">
+      <li class="task-focusOn">
+        <button class="start-button"></button>
+      </li>
+    </template>
+    <script src="js/main.js"></script>
+  </body>
+</html>
