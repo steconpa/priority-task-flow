@@ -33,9 +33,7 @@ let toDoListTasks = [];
 
 // Obtener elementos del DOM
 const completedTaskList = document.querySelector('ul[name="completed-task"]');
-const addItemButton = document.querySelector(
-  'button[name="add-new-task-button"]'
-);
+const addItemButton = document.querySelector('.add-new-task-button');
 const newTaskTemplate = document.getElementById("blueListItem-newTask");
 const taskLoaderButton = document.getElementById("taskloader");
 const blueToDoListDetails = document.querySelector("#blue-to-do-list-details");
@@ -47,12 +45,24 @@ const yellowToDoListDetails = document.querySelector("#yellow-to-do-list-details
 addItemButton.addEventListener("click", addNewTaskToDoList);
 taskLoaderButton.addEventListener("click", loadItems);
 
+function addTaskToList(task, listElement) {
+  listElement.open = true;
+  listElement.querySelector('ul').appendChild(task);
+}
+
+function findTaskById(taskId) {
+  return toDoListTasks.find(task => task.id === taskId);
+}
+
+function validateInput(inputValue) {
+  return inputValue.trim() !== "";
+}
+
 function toggleDropdown(event) {
   const dropdown = event.currentTarget.closest('.custom-dropdown');
   const summary = dropdown.querySelector('summary');
   summary.click();
 }
-
 // Manejo de clasificaciones
 function handleClassification(event) {
   const li = event.currentTarget.closest('.task-elementList');
@@ -60,7 +70,7 @@ function handleClassification(event) {
   const buttonsDropdownList = li.querySelectorAll(".dropdown-list button");
   const idValue = parseInt(li.id);
   const buttonValue = event.target.value;
-  const foundTask = toDoListTasks.find(task => task.id === idValue);
+  const foundTask = findTaskById(idValue);
   const actualList = foundTask.listName;
   const actualToDoList = document.getElementsByClassName(actualList);
   const actualToDoListDetails = actualToDoList[0].parentNode;
@@ -107,8 +117,9 @@ function handleClassification(event) {
   });
 
   const targetDetails = document.getElementById(buttonValue + '-details');
-  targetDetails.open = true;
-  targetDetails.querySelector('ul').appendChild(li);
+  
+  // Agregar la tarea a la lista que corresponde
+  addTaskToList(li, targetDetails);
 
   li.querySelector(".custom-dropdown").open = false;
 
@@ -123,10 +134,49 @@ function checkListLength(currentToDoList, currentDetailsElement) {
 
 }
 
+function updateFormForAction(action) {
+  const form = document.querySelector('.add-task-form');
+
+  // Eliminar todas las clases existentes en el formulario
+  form.classList.remove('add-task-form', 'update-task-form');
+
+  // Determinar la clase y acción correspondiente
+  let formClass, inputName, buttonClass, buttonAlt;
+  if (action === 'add') {
+    formClass = 'add-task-form';
+    inputName = 'new-task-input';
+    buttonClass = 'add-new-task-button';
+    buttonAlt = 'Agregar tarea';
+  } else if (action === 'update') {
+    formClass = 'update-task-form';
+    inputName = 'update-task-input';
+    buttonClass = 'update-task-button';
+    buttonAlt = 'Modificar tarea';
+  }
+
+  // Establecer las nuevas propiedades del formulario
+  form.classList.add(formClass);
+  form.action = '';
+  form.innerHTML = `
+    <input type="text" name="${inputName}" id="${inputName}" />
+    <button type="submit" class="${buttonClass}" name="${buttonClass}" alt="${buttonAlt}">
+      <img src="../icons/icons8-${action === 'add' ? 'agregar' : 'update'}-icon-16.png" />
+    </button>
+  `;
+}
+
 function editListItem(event) {
-  const liElement = event.target.parentNode;
+  // Modificar formulario para actualizar tarea
+  updateFormForAction('update');
+  const updateItemButton = document.querySelector('.update-task-button');
+  //updateItemButton.addEventListener("click", updateTask);
+
+  const liElement = event.target.closest('li');
   const spanElement = liElement.querySelector("span");
-  const inputElement = document.getElementById("new-task-input");
+  const idElement = parseInt(liElement.id);
+  const foundTask = findTaskById(idElement);
+  const actualList = foundTask.listName;
+  const inputElement = document.getElementById("update-task-input");
 
   // Obtener el valor del <li> y asignarlo al <input>
   inputElement.value = spanElement.textContent;
@@ -137,27 +187,27 @@ function editListItem(event) {
 }
 
 function upListItem(event) {
-  const listItem = event.target.parentNode;
+  const listItem = event.target.closest('li');
   const previousListItem = listItem.previousElementSibling;
 
   if (previousListItem) {
     listItem.parentNode.insertBefore(listItem, previousListItem);
   }
+
 }
 
 function addNewTaskToDoList(event) {
   event.preventDefault();
 
   // Obtiene el valor del input y elimina espacios en blanco al inicio y final
-  const newTaskInput = document.getElementById("new-task-input").value.trim();
+  const newTaskInput = document.getElementById("new-task-input").value;
 
   // Si el input está vacío se sale da la función
-  if (newTaskInput.trim() === "") return;
+  if (!validateInput(newTaskInput)) return;
   
   // Crea una nueva instancia de la clase Task con la descripción y lista predeterminada
   const newTask = new Task(newTaskInput, "blue-to-do-list");
   toDoListTasks.push(newTask);
-
 
   // Clona el template y obtener la referencia al elemento de la nueva tarea
   const newTaskListItem =
@@ -189,8 +239,7 @@ function addNewTaskToDoList(event) {
   newTaskListItem.id = newTask.id;
 
   // Agregar la nueva tarea a la lista azul
-  blueToDoListDetails.open = true;
-  blueToDoListDetails.querySelector('ul').appendChild(newTaskListItem);
+  addTaskToList(newTaskListItem, blueToDoListDetails);
 
   // Restablecer el valor del input a vacío
   document.getElementById("new-task-input").value = "";

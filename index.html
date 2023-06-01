@@ -34,10 +34,12 @@
   </head>
   <body>
     <header class="header-curved" id="header-curved" role="banner">
+      
       <h1 class="principal-tittle">
         <a id="img-logo" href="index.html"><img src="/icons/logo-flow.png" alt="" /></a>
         Priority Task Flow
       </h1>
+
       <ul class="principal-menu" id="principal-menu">
         <li>
           <a href="#add-task-section" alt="Agregue las tareas pendientes">agregue</a>
@@ -45,19 +47,21 @@
         <li><a href="#priority-sort-section">priorice</a></li><img src="icons/circulo-blanco-16.png">
         <li><a href="#focus-on-section">enfoquese</a></li>
       </ul>
+
     </header>
 
     <sidebar>
-      <section class="add-task" id="add-task-section">
-        <h2 class="h2-tittle-section">Agregue tareas</h2>
-        <form action="">
-          <input type="text" name="new-task-input" id="new-task-input" />
-          <button
-            type="submit"
-            class="add-new-task-button"
-            name="add-new-task-button"
-          ></button>
+
+      <section class="add-task-section" id="add-task-section">
+        <h2 class="h2-tittle-section">Agregue</h2>
+        
+        <form class="add-task-form" action="">
+          <input type="text" name="new-task-input" id="new-task-input" placeholder="Nueva tarea"/>
+          <button type="submit" class="add-new-task-button" name="add-new-task-button" alt="Agregar tarea">
+            <img src="../icons/icons8-add-icon-16.png">
+        </button>
         </form>
+
       </section>
 
       <section id="priority-sort-section" name="priority-sort-section">
@@ -88,7 +92,7 @@
         id="completed-taskList-section"
         name="completed-taskList-section"
       >
-        <h2 class="h2-tittle-section">Tareas completadas:</h2>
+        <h2 class="h2-tittle-section">Completadas:</h2>
         <ul name="completed-taskList">
           <li>Tarea 1</li>
         </ul>
@@ -126,7 +130,7 @@
     </footer>
 
     <template id="blueListItem-newTask">
-      <li class="task-elementList">
+      <li class="task-elementList" id="0">
         <details class="custom-dropdown">
           <summary class="current-button">
             <button type="button" class="changeClass-blueButton" value="blue-to-do-list"></button>
@@ -144,8 +148,10 @@
           </ul>
         </details>
         <span class="taskDescription"></span>
-        <button class="upArrow-button"></button>
-        <button class="edit-item-button"></button>
+        <button class="upArrow-button">
+          <img src="../icons/icons8-arriba-16.png" alt="subir tarea"></button>
+        <button class="edit-item-button">
+          <img src="../icons/icons8-edit-item-16.png" alt="editar tarea"></button>
       </li>
     </template>
 
@@ -154,6 +160,7 @@
         <button class="start-button"></button>
       </li>
     </template>
+
     <script src="js/main.js"></script>
   </body>
 </html>

@@ -11,7 +11,6 @@ body{
   column-gap: 10px;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto 1fr auto;
-  min-height: 100vh;
   grid-template-areas: 
     "header header header header"
     "sidebar main main main"
@@ -238,14 +237,19 @@ details ul {
   margin: 0px;
 }
 
-details li.task-elementList{
+details li.task-elementList,
+form.add-task-form,
+form.update-task-form
+{
   display: flex;
   align-items:baseline;
   padding-bottom: 7px;
   column-gap: 5px;
 }
 
-details button{
+details button, 
+.add-new-task-button,
+.update-task-button{
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -289,19 +293,9 @@ ul.dropdown-list{
   background-image: url('../icons/icons8-yellow-circle-16.png');
 }
 
-.upArrow-button {
-  background-image: url('../icons/icons8-arriba-16.png');
-  position: relative;
-}
-
-.edit-item-button {
-  background-image: url('../icons/icons8-edit-item-16.png');
-  position: relative;
-  overflow: hidden;
-}
-
 main {
   grid-area: main;
+  min-height: 75dvh;
 }
 
 #focus-on-section{
@@ -309,8 +303,7 @@ main {
   flex-direction: column;
 }
 
-.delete-button, 
-.add-new-task-button,
+.delete-button,
 .taskloader {
   border-radius: 50%;
   width: 16px;
@@ -321,11 +314,6 @@ main {
   margin-right: 5px;
   background-color: transparent;
 }
-
-.add-new-task-button{
-  background-image: url('../icons/icons8-agregar-icon-16.png');
-}
-
 
 .taskloader {
   width: 32px;
