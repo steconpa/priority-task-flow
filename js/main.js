@@ -54,6 +54,15 @@ function findTaskById(taskId) {
   return toDoListTasks.find(task => task.id === taskId);
 }
 
+function updateTaskDescription(taskId, newDescription) {
+  const foundTask = findTaskById(taskId);
+  foundTask.description = newDescription;
+}
+
+function deleteTaskById(taskId) {
+  toDoListTasks = toDoListTasks.filter(task => task.id !== taskId);
+}
+
 function validateInput(inputValue) {
   return inputValue.trim() !== "";
 }
@@ -63,6 +72,7 @@ function toggleDropdown(event) {
   const summary = dropdown.querySelector('summary');
   summary.click();
 }
+
 // Manejo de clasificaciones
 function handleClassification(event) {
   const li = event.currentTarget.closest('.task-elementList');
@@ -134,56 +144,36 @@ function checkListLength(currentToDoList, currentDetailsElement) {
 
 }
 
-function updateFormForAction(action) {
-  const form = document.querySelector('.add-task-form');
-
-  // Eliminar todas las clases existentes en el formulario
-  form.classList.remove('add-task-form', 'update-task-form');
-
-  // Determinar la clase y acción correspondiente
-  let formClass, inputName, buttonClass, buttonAlt;
-  if (action === 'add') {
-    formClass = 'add-task-form';
-    inputName = 'new-task-input';
-    buttonClass = 'add-new-task-button';
-    buttonAlt = 'Agregar tarea';
-  } else if (action === 'update') {
-    formClass = 'update-task-form';
-    inputName = 'update-task-input';
-    buttonClass = 'update-task-button';
-    buttonAlt = 'Modificar tarea';
-  }
-
-  // Establecer las nuevas propiedades del formulario
-  form.classList.add(formClass);
-  form.action = '';
-  form.innerHTML = `
-    <input type="text" name="${inputName}" id="${inputName}" />
-    <button type="submit" class="${buttonClass}" name="${buttonClass}" alt="${buttonAlt}">
-      <img src="../icons/icons8-${action === 'add' ? 'agregar' : 'update'}-icon-16.png" />
-    </button>
-  `;
-}
-
 function editListItem(event) {
-  // Modificar formulario para actualizar tarea
-  updateFormForAction('update');
-  const updateItemButton = document.querySelector('.update-task-button');
-  //updateItemButton.addEventListener("click", updateTask);
+  const li = event.currentTarget.closest('.task-elementList');
+  const inputElement = li.querySelector(".taskDescription");
+  const taskId = parseInt(li.id);
 
-  const liElement = event.target.closest('li');
-  const spanElement = liElement.querySelector("span");
-  const idElement = parseInt(liElement.id);
-  const foundTask = findTaskById(idElement);
-  const actualList = foundTask.listName;
-  const inputElement = document.getElementById("update-task-input");
-
-  // Obtener el valor del <li> y asignarlo al <input>
-  inputElement.value = spanElement.textContent;
+  inputElement.removeAttribute("readonly");
   inputElement.focus();
 
-  // Eliminar el <li> de la lista
-  liElement.remove();
+  inputElement.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const newDescription = inputElement.value.trim();
+
+      if (newDescription === "") {
+        const foundTask = findTaskById(taskId);
+        const actualList = foundTask.listName;
+        const actualToDoList = document.getElementsByClassName(actualList);
+        const actualToDoListDetails = actualToDoList[0].parentNode;
+        // Si el usuario deja el campo en blanco y presiona Enter, elimina la tarea
+        li.remove();
+        deleteTaskById(taskId);
+        checkListLength (actualToDoList[0].childNodes.length, actualToDoListDetails);
+      } else if (newDescription !== inputElement.defaultValue) {
+        // Si el usuario hace modificaciones en la descripción de la tarea
+        updateTaskDescription(taskId, newDescription);
+      }
+
+      inputElement.setAttribute("readonly", true);
+    }
+  });
 }
 
 function upListItem(event) {
@@ -214,7 +204,7 @@ function addNewTaskToDoList(event) {
     newTaskTemplate.content.cloneNode(true).firstElementChild;
 
   // Obtiene el elemento <span> dentro del elemento de la nueva tarea
-  const spanElement = newTaskListItem.querySelector("span");
+  const inputElement = newTaskListItem.querySelector("input");
 
   // Obtiene las referencias de los botones
   const blueButton = newTaskListItem.querySelector('.changeClass-blueButton');
@@ -233,7 +223,7 @@ function addNewTaskToDoList(event) {
   editItemButton.addEventListener("click", editListItem);
 
   // Asigna el valor del input en el elemento <span> de la nueva tarea
-  spanElement.textContent = newTask.description;
+  inputElement.value = newTask.description;
 
   // Asigna el id de la tarea al nuevo elemento <li>
   newTaskListItem.id = newTask.id;
@@ -288,17 +278,4 @@ function loadItemsFromList(list, loadedItems, targetList) {
   }
 
   return loadedItems + itemsLoaded;
-}
-
-function createDeleteButton() {
-  const deleteButton = document.createElement("button");
-  deleteButton.classList.add("delete-button");
-  deleteButton.innerHTML =
-    '<img src="icons/icons8-delete-icon-16.png" alt="Eliminar tarea">';
-
-  deleteButton.addEventListener("click", function (event) {
-    event.target.closest("li").remove();
-  });
-
-  return deleteButton;
 }
