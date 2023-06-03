@@ -13,6 +13,7 @@ body{
   grid-template-rows: auto 1fr auto;
   grid-template-areas: 
     "header header header header"
+    "date date date date"
     "sidebar main main main"
     "footer footer footer footer";
   font-family: 'Noto Sans', sans-serif;
@@ -102,6 +103,13 @@ a {
     font-size:larger;
     letter-spacing: 1.5px ;
     font-size: larger;
+}
+
+#current-date {
+  grid-area: date;
+  padding-top: 0.5em;
+  font-size: xx-large;
+  text-align: center;
 }
 
 sidebar {
@@ -249,7 +257,9 @@ form.update-task-form
 
 details button, 
 .add-new-task-button,
-.update-task-button{
+.update-task-button,
+.return-task-button,
+.start-task-button{
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -258,10 +268,6 @@ details button,
   cursor: pointer;
   background-color: transparent;
   overflow: visible;
-}
-
-details li span{
-  flex-grow: 4;
 }
 
 details.custom-dropdown summary.current-button{
@@ -293,6 +299,19 @@ ul.dropdown-list{
   background-image: url('../icons/icons8-yellow-circle-16.png');
 }
 
+.taskDescription {
+  flex: 1; /* Hace que el ancho se ajuste al espacio disponible dentro del contenedor flex */
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  overflow: auto;
+  white-space: normal; /* Permite que el contenido se ajuste automáticamente a varias líneas */
+  resize: vertical; /* Permite redimensionar verticalmente el textarea si el contenido lo requiere */
+}
+
 main {
   grid-area: main;
   min-height: 75dvh;
@@ -303,7 +322,6 @@ main {
   flex-direction: column;
 }
 
-.delete-button,
 .taskloader {
   border-radius: 50%;
   width: 16px;
@@ -311,7 +329,6 @@ main {
   padding: 0;
   border: 0;
   cursor: pointer;
-  margin-right: 5px;
   background-color: transparent;
 }
 
@@ -321,8 +338,29 @@ main {
   background-image: url('../icons/icons8-download-32.png');
 }
 
-.delete-button:hover {
-    color: red;
+ul#focusOn-sixList {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
+  margin: 0px;
+  padding: 10px;
+  width: 80%;
+}
+
+.return-task-button,
+.start-task-button{
+  width: 32px;
+  height: 32px;
+}
+
+.taskElement-focusOn{
+  display: flex;
+  align-items:center;
+  column-gap: 10px;
+}
+.taskDescription-elementList{
+  flex: 1;
+  font-size: x-large;
 }
 
   footer {

@@ -5,6 +5,7 @@ class Task {
     this._id = ++Task.count;
     this._description = description;
     this._listName = listName;
+    this._position = null; // Nueva propiedad para almacenar la posición
   }
 
   get id() {
@@ -27,9 +28,29 @@ class Task {
     this._listName = newListName;
   }
 
+  get position() {
+    return this._position;
+  }
+
+  set position(newPosition) {
+    this._position = newPosition;
+  }
 }
 
 let toDoListTasks = [];
+  
+// Obtener la fecha actual
+  const currentDate = new Date();
+
+// Obtener el día de la semana en formato largo
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+const formattedDate = currentDate.toLocaleDateString(undefined, options);
+
+  // Obtener el elemento div por su ID
+  const currentDateDiv = document.getElementById("current-date");
+
+  // Establecer el contenido del div como la fecha formateada
+  currentDateDiv.textContent = formattedDate;
 
 // Obtener elementos del DOM
 const completedTaskList = document.querySelector('ul[name="completed-task"]');
@@ -54,9 +75,24 @@ function findTaskById(taskId) {
   return toDoListTasks.find(task => task.id === taskId);
 }
 
+function findTaskByIdAndListName(id, listName) {
+  return toDoListTasks.find(task => task.id === id && task.listName === listName);
+}
+
 function updateTaskDescription(taskId, newDescription) {
   const foundTask = findTaskById(taskId);
   foundTask.description = newDescription;
+}
+
+function updateTaskPositions(listName) {
+  const list = document.getElementById(listName);
+  const taskElements = list.childNodes;
+
+  for (let i = 0; i < taskElements.length; i++) {
+    const taskId = parseInt(taskElements[i].id);
+    const task = findTaskByIdAndListName(taskId, listName);
+    task.position = i + 1;
+  }
 }
 
 function deleteTaskById(taskId) {
@@ -130,6 +166,9 @@ function handleClassification(event) {
   
   // Agregar la tarea a la lista que corresponde
   addTaskToList(li, targetDetails);
+  updateTaskPositions(foundTask.listName);
+  updateTaskPositions(actualList);
+
 
   li.querySelector(".custom-dropdown").open = false;
 
@@ -182,8 +221,9 @@ function upListItem(event) {
 
   if (previousListItem) {
     listItem.parentNode.insertBefore(listItem, previousListItem);
+    const listId = listItem.parentNode.id;
+    updateTaskPositions(listId);
   }
-
 }
 
 function addNewTaskToDoList(event) {
@@ -195,16 +235,17 @@ function addNewTaskToDoList(event) {
   // Si el input está vacío se sale da la función
   if (!validateInput(newTaskInput)) return;
   
-  // Crea una nueva instancia de la clase Task con la descripción y lista predeterminada
-  const newTask = new Task(newTaskInput, "blue-to-do-list");
+  const listName = "blue-to-do-list";
+
+  // Crea una nueva instancia de la clase Task con la descripción y listName predeterminados
+  const newTask = new Task(newTaskInput, listName);
   toDoListTasks.push(newTask);
 
   // Clona el template y obtener la referencia al elemento de la nueva tarea
-  const newTaskListItem =
-    newTaskTemplate.content.cloneNode(true).firstElementChild;
+  const newTaskListItem = newTaskTemplate.content.cloneNode(true).firstElementChild;
 
-  // Obtiene el elemento <span> dentro del elemento de la nueva tarea
-  const inputElement = newTaskListItem.querySelector("input");
+  // Obtiene el elemento <input> dentro del elemento de la nueva tarea
+  const inputElement = newTaskListItem.querySelector(".taskDescription");
 
   // Obtiene las referencias de los botones
   const blueButton = newTaskListItem.querySelector('.changeClass-blueButton');
@@ -233,49 +274,52 @@ function addNewTaskToDoList(event) {
 
   // Restablecer el valor del input a vacío
   document.getElementById("new-task-input").value = "";
+
+  updateTaskPositions(listName);
 }
 
 function loadItems() {
-  const redList = redToDoListDetails.querySelectorAll(".task-elementList");
-  const orangeList = orangeToDoListDetails.querySelectorAll(".task-elementList");
-  const yellowList = yellowToDoListDetails.querySelectorAll(".task-elementList");
+  const listNames = ["red-to-do-list", "orange-to-do-list", "yellow-to-do-list"];
+  const focusOnSixList = document.getElementById('focusOn-sixList');
 
-  const focusOnSixList = document.querySelector('ul[name="focusOn-sixList"]');
-  focusOnSixList.innerHTML = "";
+  const template = document.getElementById("focusOn-elementsList");
 
   let loadedItems = 0;
 
-  // Cargar elementos de la lista roja
-  loadedItems = loadItemsFromList(redList, loadedItems, focusOnSixList);
+  for (const listName of listNames) {
+    const tasks = toDoListTasks.filter(task => task.listName === listName);
+    const sortedTasks = tasks.sort((a, b) => a.position - b.position);
 
-  // Si aún se necesitan más elementos, cargar de la lista naranja
-  if (loadedItems < 6) {
-    loadedItems = loadItemsFromList(orangeList, loadedItems, focusOnSixList);
-  }
+    for (const task of sortedTasks) {
+      const listItem = document.getElementById(task.id);
 
-  // Si aún se necesitan más elementos, cargar de la lista amarilla
-  if (loadedItems < 6) {
-    loadedItems = loadItemsFromList(yellowList, loadedItems, focusOnSixList);
+      if (listItem) {
+        const clonedTemplate = template.content.cloneNode(true).firstElementChild;
+        const descriptionElement = clonedTemplate.querySelector(".taskDescription-elementList");
+        const returnButton = clonedTemplate.querySelector(".return-task-button");
+        const startButton = clonedTemplate.querySelector(".start-task-button");
+
+        descriptionElement.textContent = task.description;
+        clonedTemplate.id = task.id;
+        returnButton.addEventListener("click", handleReturnTask);
+        startButton.addEventListener("click", handleStartTask);
+
+        focusOnSixList.appendChild(clonedTemplate);
+        listItem.parentNode.removeChild(listItem);
+        loadedItems++;
+
+        if (loadedItems >= 6) {
+          return;
+        }
+      }
+    }
   }
 }
 
-function loadItemsFromList(list, loadedItems, targetList) {
-  let itemsToLoad = 6 - loadedItems;
-  let itemsLoaded = 0;
+function handleReturnTask (){
+  console.log("retorno")
+}
 
-  for (let i = 0; i < list.length; i++) {
-    if (itemsLoaded >= itemsToLoad) {
-      break;
-    }
-
-    const liElement = document.createElement("li");
-    liElement.textContent = list[i].textContent;
-    targetList.appendChild(liElement);
-
-    list[i].remove();
-
-    itemsLoaded++;
-  }
-
-  return loadedItems + itemsLoaded;
+function handleStartTask(){
+  console.log("Empieza")
 }

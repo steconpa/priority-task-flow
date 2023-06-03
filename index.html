@@ -49,7 +49,9 @@
       </ul>
 
     </header>
+    <div id="current-date">
 
+    </div>
     <sidebar>
 
       <section class="add-task-section" id="add-task-section">
@@ -68,23 +70,31 @@
         <h2 class="h2-tittle-section">Priorice</h2>
 
         <details id="red-to-do-list-details">
-          <summary class="red-to-do-list-summary">urgente + importante</summary>
+          <summary class="red-to-do-list-summary" aria-expanded="false" aria-controls="red-to-do-list">
+            urgente + importante
+          </summary>
           <ul class="red-to-do-list" id="red-to-do-list"></ul>
         </details>
         
         <details id="orange-to-do-list-details">
-          <summary class="orange-to-do-list-summary">importante + no urgente</summary>
-          <ul class="orange-to-do-list" name="orange-to-do-list"></ul>
+          <summary class="orange-to-do-list-summary" aria-expanded="false" aria-controls="orange-to-do-list">
+            importante + no urgente
+          </summary>
+          <ul class="orange-to-do-list" id="orange-to-do-list"></ul>
         </details>
         
-        <details id="yellow-to-do-list-details">
-          <summary class="yellow-to-do-list-summary">urgente + no importante</summary>
-          <ul class="yellow-to-do-list" name="yellow-to-do-list"></ul>
+        <details id="yellow-to-do-list-details" aria-expanded="false" aria-controls="yellow-to-do-list">
+          <summary class="yellow-to-do-list-summary">
+            urgente + no importante
+          </summary>
+          <ul class="yellow-to-do-list" id="yellow-to-do-list"></ul>
         </details>
         
         <details id="blue-to-do-list-details">
-          <summary class="blue-to-do-list-summary">pendientes priorizar</summary>
-          <ul class="blue-to-do-list" name="blue-to-do-list"></ul>
+          <summary class="blue-to-do-list-summary" aria-expanded="false" aria-controls="blue-to-do-list">
+            pendientes priorizar
+          </summary>
+          <ul class="blue-to-do-list" id="blue-to-do-list"></ul>
         </details>
       </section>
 
@@ -102,10 +112,12 @@
     <main>
       <section id="focus-on-section" name="focus-on-section">
         <h2 class="h2-tittle-section">
-          <button class="taskloader" id="taskloader"></button> Enfoquese en
-          seis:
+          Enfoquese en seis 
+          <button class="taskloader" id="taskloader">
+            <img src="../icons/icons8-download-32.png">
+          </button>
         </h2>
-        <ul name="focusOn-sixList"></ul>
+        <ul id="focusOn-sixList"></ul>
       </section>
     </main>
 
@@ -147,7 +159,7 @@
             </li>
           </ul>
         </details>
-        <input type="text" class="taskDescription" readonly />
+        <textarea type="text" class="taskDescription" readonly></textarea>
         <button class="upArrow-button">
           <img src="../icons/icons8-arriba-16.png" alt="subir tarea">
         </button>
@@ -158,9 +170,17 @@
     </template>
     
 
-    <template id="focusOn-ListItem">
-      <li class="task-focusOn">
-        <button class="start-button"></button>
+    <template id="focusOn-elementsList">
+      <li class="taskElement-focusOn" id="">
+        <button class="return-task-button">
+          <img src="icons/icons8-go-back-icon-32.png">
+        </button>
+        <span class="taskDescription-elementList">
+
+        </span>
+        <button class="start-task-button">
+          <img src="icons/icons8-play-icon-32.png">
+        </button>
       </li>
     </template>
 
