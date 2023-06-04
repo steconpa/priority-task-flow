@@ -6,14 +6,14 @@ html {
   font-size: 1em;
 }
 
-body{
+body {
   display: grid;
   column-gap: 10px;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto 1fr auto;
   grid-template-areas: 
     "header header header header"
-    "date date date date"
+    "task-in-progress task-in-progress task-in-progress task-in-progress"
     "sidebar main main main"
     "footer footer footer footer";
   font-family: 'Noto Sans', sans-serif;
@@ -35,11 +35,12 @@ ul {
   border-bottom-left-radius: 50% 10%;
   border-bottom-right-radius: 50% 10%;
 }
+
 #img-logo{
   margin-right: 15px;
 }
 
-.principal-tittle{
+.principal-tittle {
   font-family: 'Indie Flower';
   display: inline-flex;
   font-size: 3em;
@@ -54,12 +55,12 @@ ul {
   margin: 0;
 }
 
-#principal-menu img{
+#principal-menu img {
   width: 16px;
   height: 16px;
 }
 
-#principal-menu li {
+#principal-menu li:not(:has(img)) {
   position: relative;
   cursor: pointer;
   padding: 7px;
@@ -77,7 +78,7 @@ ul {
   transition: background-color 0.2s;
 }
 
-#principal-menu li:hover::after {
+#principal-menu li:not(:has(img)):hover::after {
   background-color: whitesmoke; /* Color de la línea al hacer hover */
 }
 
@@ -94,22 +95,26 @@ a {
   text-decoration: none; /* Elimina la subrayado del enlace */
 }
 
-.h2-tittle-section{
+.h2-tittle-section {
   font-size: large;
 }
 
-.decoration-text{
+.decoration-text {
     font-family: 'Alex Brush', cursive;
     font-size:larger;
     letter-spacing: 1.5px ;
     font-size: larger;
 }
 
-#current-date {
-  grid-area: date;
+#task-in-progress {
+  grid-area: task-in-progress;
   padding-top: 0.5em;
   font-size: xx-large;
   text-align: center;
+}
+
+.taskDescription-inProgress {
+  display: none; /* Oculta inicialmente el textarea */
 }
 
 sidebar {
@@ -195,22 +200,22 @@ details summary::before {
   transition: transform 0.3s ease;
 }
 
-details#red-to-do-list-details summary.red-to-do-list-summary::before{
+details#red-to-do-list-details summary.red-to-do-list-summary::before {
   background-color: #870000;
   color: #FFB4B0;
 }
 
-details#orange-to-do-list-details summary.orange-to-do-list-summary::before{
+details#orange-to-do-list-details summary.orange-to-do-list-summary::before {
   color: #FEC595;
   background-color: #4B2011;
 }
 
-details#yellow-to-do-list-details summary.yellow-to-do-list-summary::before{
+details#yellow-to-do-list-details summary.yellow-to-do-list-summary::before {
   color: #FFFFCC;
   background-color: #626100;
 }
 
-details#blue-to-do-list-details summary.blue-to-do-list-summary::before{
+details#blue-to-do-list-details summary.blue-to-do-list-summary::before {
   background-color: #43469A;
   color: #8BD5F3;
 }
@@ -220,22 +225,22 @@ details[open] summary::before {
   transform: rotate(-180deg);
 }
 
-details#blue-to-do-list-details[open] summary.blue-to-do-list-summary::before{
+details#blue-to-do-list-details[open] summary.blue-to-do-list-summary::before {
   color: #3D408D;
   background-color: #D3F7FF;
 }
 
-details#yellow-to-do-list-details[open] summary.yellow-to-do-list-summary::before{
+details#yellow-to-do-list-details[open] summary.yellow-to-do-list-summary::before {
   color:#FDFD66;
   background-color: #4E4E26;
 }
 
-details#orange-to-do-list-details[open] summary.orange-to-do-list-summary::before{
+details#orange-to-do-list-details[open] summary.orange-to-do-list-summary::before {
   color: #FFA500;
   background-color: #4B2011;
 }
 
-details#red-to-do-list-details[open] summary.red-to-do-list-summary::before{
+details#red-to-do-list-details[open] summary.red-to-do-list-summary::before {
   background-color: #FFB4B0;
   color:#870000;
 }
@@ -247,11 +252,9 @@ details ul {
 
 details li.task-elementList,
 form.add-task-form,
-form.update-task-form
-{
+form.update-task-form {
   display: flex;
   align-items:baseline;
-  padding-bottom: 7px;
   column-gap: 5px;
 }
 
@@ -259,7 +262,7 @@ details button,
 .add-new-task-button,
 .update-task-button,
 .return-task-button,
-.start-task-button{
+.start-task-button {
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -270,32 +273,32 @@ details button,
   overflow: visible;
 }
 
-details.custom-dropdown summary.current-button{
+details.custom-dropdown summary.current-button {
   padding-bottom: 0px;
 }
 
-details.custom-dropdown summary.current-button::before{
+details.custom-dropdown summary.current-button::before {
   content: none;
   padding-bottom: 0px;
 }
 
-ul.dropdown-list{
+ul.dropdown-list {
   padding: 0;
 }
 
-.changeClass-blueButton{
+.changeClass-blueButton {
     background-image: url('../icons/icons8-blue-circle-16.png');
 }
 
-.changeClass-redButton{
+.changeClass-redButton {
   background-image: url('../icons/icons8-red-circle-16.png');
 }
 
-.changeClass-orangeButton{
+.changeClass-orangeButton {
   background-image: url('../icons/icons8-orange-circle-16.png');
 }
 
-.changeClass-yellowButton{
+.changeClass-yellowButton {
   background-image: url('../icons/icons8-yellow-circle-16.png');
 }
 
@@ -304,12 +307,9 @@ ul.dropdown-list{
   border: none;
   background-color: transparent;
   padding: 0;
-  font-family: inherit;
-  font-size: inherit;
-  outline: none;
-  overflow: auto;
-  white-space: normal; /* Permite que el contenido se ajuste automáticamente a varias líneas */
-  resize: vertical; /* Permite redimensionar verticalmente el textarea si el contenido lo requiere */
+  max-height: calc(1.3em*3);
+  overflow-y: auto;
+  resize: none;
 }
 
 main {
@@ -317,7 +317,7 @@ main {
   min-height: 75dvh;
 }
 
-#focus-on-section{
+#focus-on-section {
   display: flex;
   flex-direction: column;
 }
@@ -348,17 +348,17 @@ ul#focusOn-sixList {
 }
 
 .return-task-button,
-.start-task-button{
+.start-task-button {
   width: 32px;
   height: 32px;
 }
 
-.taskElement-focusOn{
+.taskElement-focusOn {
   display: flex;
   align-items:center;
   column-gap: 10px;
 }
-.taskDescription-elementList{
+.taskDescription-elementList {
   flex: 1;
   font-size: x-large;
 }
