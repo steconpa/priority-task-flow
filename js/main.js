@@ -68,9 +68,7 @@ const currentDateDiv = document.getElementById("current-date");
 currentDateDiv.textContent = formattedDate;
 
 // Obtener elementos del DOM
-const completedTaskList = document.querySelector('ul[name="completed-task"]');
 const addItemButton = document.querySelector(".add-new-task-button");
-const newTaskTemplate = document.getElementById("blueListItem-newTask");
 const taskLoaderButton = document.getElementById("taskloader");
 const blueToDoListDetails = document.querySelector("#blue-to-do-list-details");
 const redToDoListDetails = document.querySelector("#red-to-do-list-details");
@@ -85,9 +83,8 @@ const yellowToDoListDetails = document.querySelector(
 addItemButton.addEventListener("click", addNewTaskToDoList);
 taskLoaderButton.addEventListener("click", loadItems);
 
-function addTaskToList(task, listElement) {
-  listElement.open = true;
-  listElement.querySelector("ul").appendChild(task);
+function addTaskToList(taskListItem, listName) {
+  document.getElementById(listName).appendChild(taskListItem);
 }
 
 function findTaskById(taskId) {
@@ -120,14 +117,23 @@ function deleteTaskById(taskId) {
   toDoListTasks = toDoListTasks.filter((task) => task.id !== taskId);
 }
 
+/*
+ * Validates the input value for a task.
+ * @param {string} inputValue - The input value to validate.
+ * @returns {string|boolean} - The validated input value if valid, otherwise false.
+ */
 function validateInput(inputValue) {
-  return inputValue.trim() !== "";
-}
+  // Trim the input value to remove leading and trailing whitespace
+  const trimmedValue = inputValue.trim();
 
-function toggleDropdown(event) {
-  const dropdown = event.currentTarget.closest(".custom-dropdown");
-  const summary = dropdown.querySelector("summary");
-  summary.click();
+  // Replace newline characters with a space
+  const valueWithoutLines = trimmedValue.replace(/\n/g, ' ');
+
+  // Check if the value is not empty and does not exceed 250 characters
+  const isValid = valueWithoutLines !== "" && valueWithoutLines.length <= 250;
+
+  // Return the validated input value if valid, otherwise false
+  return isValid ? valueWithoutLines : false;
 }
 
 // Manejo de clasificaciones
@@ -201,40 +207,32 @@ function checkListLength(currentToDoList, currentDetailsElement) {
   }
 }
 
-function editListItem(event) {
-  const li = event.currentTarget.closest(".task-elementList");
-  const inputElement = li.querySelector(".taskDescription");
-  const taskId = parseInt(li.id);
+/**
+ * Handles the editing of a task description.
+ * @param {Event} event - dblclick event on the task description.
+ */
+function editTaskDescription(event) {
+  // Get references to the add-task-form and update-task-form elements
+  const addTaskForm = document.getElementById("add-task-form");
+  const updateTaskForm = document.getElementById("update-task-form");
 
-  inputElement.removeAttribute("readonly");
-  inputElement.focus();
+  // Get references to the necessary elements
+  const inputEditTask = document.getElementById("update-task-input");
+  const listItem = event.currentTarget.parentNode;
+  const taskDescription = event.currentTarget.closest(".task-description");
+  const taskId = parseInt(taskDescription.dataset.taskId);
 
-  inputElement.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const newDescription = inputElement.value.trim();
+  // Hide the add task form and show the update task form
+  addTaskForm.style.display = "none";
+  updateTaskForm.style.display = "flex";
 
-      if (newDescription === "") {
-        const foundTask = findTaskById(taskId);
-        const actualList = foundTask.listName;
-        const actualToDoList = document.getElementsByClassName(actualList);
-        const actualToDoListDetails = actualToDoList[0].parentNode;
-        // Si el usuario deja el campo en blanco y presiona Enter, elimina la tarea
-        li.remove();
-        deleteTaskById(taskId);
-        updateTaskPositions(actualList)
-        checkListLength(
-          actualToDoList[0].childNodes.length,
-          actualToDoListDetails
-        );
-      } else if (newDescription !== inputElement.defaultValue) {
-        // Si el usuario hace modificaciones en la descripción de la tarea
-        updateTaskDescription(taskId, newDescription);
-      }
+  // Set the task ID to the input and populate the input with the task description
+  inputEditTask.dataset.taskId = taskId;
+  inputEditTask.value = taskDescription.textContent;
+  inputEditTask.focus();
 
-      inputElement.setAttribute("readonly", true);
-    }
-  });
+  // Remove the list item from the DOM
+  listItem.remove();
 }
 
 function upListItem(event) {
@@ -248,61 +246,73 @@ function upListItem(event) {
   }
 }
 
-function addNewTaskToDoList(event) {
-  event.preventDefault();
+/*
+ * Creates a new task list item element based on the provided task.
+ * @param {Task} newTask - The new task object.
+ * @returns {HTMLElement} - The newly created task list item element.
+ */
+function createNewTaskListItem(newTask) {
+  // Get the template for a new uncategorized task
+  const newTaskTemplate = document.getElementById("new-uncategorized-task-template");
 
-  // Obtiene el valor del input y elimina espacios en blanco al inicio y final
-  const newTaskInput = document.getElementById("new-task-input").value;
+  // Clone the template and get a reference to the new task list item element
+  const newTaskListItem = newTaskTemplate.content.cloneNode(true).firstElementChild;
 
-  // Si el input está vacío se sale da la función
-  if (!validateInput(newTaskInput)) return;
+  // Get references to the task description and buttons within the new task list item
+  const taskDescription = newTaskListItem.querySelector(".task-description");
+  const redButton = newTaskListItem.querySelector(".button-assign-task-red-list");
+  const orangeButton = newTaskListItem.querySelector(".button-assign-task-orange-list");
+  const yellowButton = newTaskListItem.querySelector(".button-assign-task-yellow-list");
+  const blueButton = newTaskListItem.querySelector(".button-assign-blue-list");
 
-  const listName = "blue-to-do-list";
-
-  // Crea una nueva instancia de la clase Task con la descripción y listName predeterminados
-  const newTask = new Task(newTaskInput, listName);
-  toDoListTasks.push(newTask);
-
-  // Clona el template y obtener la referencia al elemento de la nueva tarea
-  const newTaskListItem =
-    newTaskTemplate.content.cloneNode(true).firstElementChild;
-
-  // Obtiene el elemento <input> dentro del elemento de la nueva tarea
-  const inputElement = newTaskListItem.querySelector(".taskDescription");
-
-  // Obtiene las referencias de los botones
-  const blueButton = newTaskListItem.querySelector(".changeClass-blueButton");
-  const redButton = newTaskListItem.querySelector(".changeClass-redButton");
-  const orangeButton = newTaskListItem.querySelector(
-    ".changeClass-orangeButton"
-  );
-  const yellowButton = newTaskListItem.querySelector(
-    ".changeClass-yellowButton"
-  );
-  const upArrowButton = newTaskListItem.querySelector(".upArrow-button");
-  const editItemButton = newTaskListItem.querySelector(".edit-item-button");
-
-  // Agregar eventos de clic a los botones
-  blueButton.addEventListener("click", toggleDropdown);
+  // Add event listeners to the buttons and task description
+  blueButton.addEventListener("click", handleClassification);
   redButton.addEventListener("click", handleClassification);
   orangeButton.addEventListener("click", handleClassification);
   yellowButton.addEventListener("click", handleClassification);
-  upArrowButton.addEventListener("click", upListItem);
-  editItemButton.addEventListener("click", editListItem);
+  taskDescription.addEventListener("dblclick", editTaskDescription);
 
-  // Asigna el valor del input en el elemento <span> de la nueva tarea
-  inputElement.value = newTask.description;
+  // Set the task description and task ID as data attribute
+  taskDescription.textContent = newTask.description;
+  taskDescription.dataset.taskId = newTask.id;
 
-  // Asigna el id de la tarea al nuevo elemento <li>
-  newTaskListItem.id = newTask.id;
+  // Return the new task list item element
+  return newTaskListItem;
+}
 
-  // Agregar la nueva tarea a la lista azul
-  addTaskToList(newTaskListItem, blueToDoListDetails);
+/*
+ * Event handler for adding a new task to the to-do list.
+ * @param {Event} event - event click of the add-new-task-button.
+ */
+function addNewTaskToDoList(event) {
+  event.preventDefault();
 
-  // Restablecer el valor del input a vacío
+  // Get the value of the new task input
+  const newTaskInput = document.getElementById("new-task-input").value;
+
+  // Validate the input
+  const validatedInput = validateInput(newTaskInput);
+
+  // If the input is not valid, exit the function
+  if (!validatedInput) return;
+
+  // Define the list name for the new task
+  const listName = "uncategorized-to-do-list";
+
+  // Create a new instance of the Task class
+  const newTask = new Task(validatedInput, listName);
+
+  // Add the new task to the toDoListTasks array
+  toDoListTasks.push(newTask);
+
+  // Create a new task list item element
+  const newTaskListItem = createNewTaskListItem(newTask);
+
+  // Add the new task list item to the specified list
+  addTaskToList(newTaskListItem, listName);
+
+  // Reset the value of the new-task-input
   document.getElementById("new-task-input").value = "";
-
-  updateTaskPositions(listName);
 }
 
 function loadItems() {

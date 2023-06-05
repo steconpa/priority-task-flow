@@ -10,7 +10,7 @@ body {
   display: grid;
   column-gap: 10px;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
   grid-template-areas: 
     "header header header header"
     "task-in-progress task-in-progress task-in-progress task-in-progress"
@@ -245,22 +245,38 @@ details#red-to-do-list-details[open] summary.red-to-do-list-summary::before {
   color:#870000;
 }
 
-details ul {
-  padding: 7px;
-  margin: 0px;
+/*Agregar tareas*/
+form#add-task-form,
+form#update-task-form {
+display: flex;
+flex-direction: column;
+justify-content: center;
 }
 
-details li.task-elementList,
-form.add-task-form,
-form.update-task-form {
+form#update-task-form {
+  display: none;
+}
+
+textarea#new-task-input,
+textarea#update-task-input {
+  background-color: transparent;
+  padding: 5px;
+  resize: none;
+  border-radius: 5px;
+}
+form#add-task-form > div,
+form#update-task-form > div {
   display: flex;
-  align-items:baseline;
-  column-gap: 5px;
+  justify-content: center;
 }
 
-details button, 
-.add-new-task-button,
-.update-task-button,
+form#add-task-form button,
+form#update-task-form button {
+  font-size: small;
+  margin: 5px ;
+}
+
+.category-buttons > button,
 .return-task-button,
 .start-task-button {
   border-radius: 50%;
@@ -273,48 +289,67 @@ details button,
   overflow: visible;
 }
 
-details.custom-dropdown summary.current-button {
-  padding-bottom: 0px;
+/*Lista de tareas no categorizadas*/
+ul#uncategorized-to-do-list {
+padding-left: 5px;
 }
 
-details.custom-dropdown summary.current-button::before {
-  content: none;
-  padding-bottom: 0px;
+li.task-list-item {
+  display: flex;
+  align-items:center;
+  column-gap: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: silver solid 1px;
 }
 
-ul.dropdown-list {
-  padding: 0;
+li.task-list-item > .category-buttons {
+  flex-basis: 32px;
 }
 
-.changeClass-blueButton {
-    background-image: url('../icons/icons8-blue-circle-16.png');
-}
-
-.changeClass-redButton {
-  background-image: url('../icons/icons8-red-circle-16.png');
-}
-
-.changeClass-orangeButton {
-  background-image: url('../icons/icons8-orange-circle-16.png');
-}
-
-.changeClass-yellowButton {
-  background-image: url('../icons/icons8-yellow-circle-16.png');
-}
-
-.taskDescription {
-  flex: 1; /* Hace que el ancho se ajuste al espacio disponible dentro del contenedor flex */
+span.task-description {
+  flex-grow: 1;
+  font-size:small;
   border: none;
   background-color: transparent;
   padding: 0;
-  max-height: calc(1.3em*3);
-  overflow-y: auto;
-  resize: none;
+}
+
+.category-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: center;
 }
 
 main {
   grid-area: main;
   min-height: 75dvh;
+}
+/*Tablas de categorias */
+
+table {
+  width: 100%;
+}
+
+th{
+  font-size: x-small;
+  color: gray;
+  text-align: left; /* Alinea el texto a la izquierda */
+  border-bottom: solid 1px silver;
+}
+
+th:first-child {
+  flex: 1; /* La primera columna ocupa el resto del espacio disponible */
+}
+
+th:not(:first-child) {
+  width: auto; /* Las demás columnas se ajustan automáticamente al contenido */
+}
+
+td {
+  font-size: small;
+  padding: 10px 5px 10px 5px;
+  border-bottom: silver solid 1px;
 }
 
 #focus-on-section {
