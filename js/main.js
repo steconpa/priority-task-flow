@@ -69,6 +69,8 @@ currentDateDiv.textContent = formattedDate;
 
 // Obtener elementos del DOM
 const addItemButton = document.querySelector(".add-new-task-button");
+const updateTaskButton = document.querySelector(".update-task-button");
+const deleteTaskButton = document.querySelector(".delete-task-button");
 const taskLoaderButton = document.getElementById("taskloader");
 const blueToDoListDetails = document.querySelector("#blue-to-do-list-details");
 const redToDoListDetails = document.querySelector("#red-to-do-list-details");
@@ -81,6 +83,8 @@ const yellowToDoListDetails = document.querySelector(
 
 // Event listeners
 addItemButton.addEventListener("click", addNewTaskToDoList);
+updateTaskButton.addEventListener("click",updateTaskListElement);
+deleteTaskButton.addEventListener("click",deleteTaskElement);
 taskLoaderButton.addEventListener("click", loadItems);
 
 function addTaskToList(taskListItem, listName) {
@@ -313,6 +317,86 @@ function addNewTaskToDoList(event) {
 
   // Reset the value of the new-task-input
   document.getElementById("new-task-input").value = "";
+}
+
+/**
+ * Reset the update task form and show the add task form.
+ * @param {HTMLElement} updateTaskInput - The update task input element.
+ * @param {HTMLElement} addTaskForm - The add task form element.
+ * @param {HTMLElement} updateTaskForm - The update task form element.
+ */
+function resetUpdateTaskForm(updateTaskInput, addTaskForm, updateTaskForm) {
+  updateTaskInput.dataset.taskId = 0;
+  updateTaskInput.value = "";
+  addTaskForm.style.display = "flex";
+  updateTaskForm.style.display = "none";
+}
+
+/**
+ * Deletes the task element from the task list.
+ * @param {Event} event - event click on the button delete-task-button.
+ */
+function deleteTaskElement(event) {
+  event.preventDefault();
+
+  // Get the add task form and update task form elements
+  const addTaskForm = document.getElementById("add-task-form");
+  const updateTaskForm = document.getElementById("update-task-form");
+
+  // Get the delete task input element and retrieve the task ID
+  const updateTaskInput = document.getElementById("update-task-input");
+  const taskId = parseInt(updateTaskInput.dataset.taskId);
+
+  // Delete the task by ID
+  deleteTaskById(taskId);
+
+  //Reset the update task form and show the add task form
+  resetUpdateTaskForm(updateTaskInput, addTaskForm, updateTaskForm);
+}
+
+/**
+ * Updates the task list element with the new task description.
+ * @param {Event} event - event click on the button update-task-button.
+ */
+function updateTaskListElement(event) {
+  event.preventDefault();
+
+  // Get the add task form and update task form elements
+  const addTaskForm = document.getElementById("add-task-form");
+  const updateTaskForm = document.getElementById("update-task-form");
+
+  // Get the update task input element and retrieve the new task description
+  const updateTaskInput = document.getElementById("update-task-input");
+  const newTaskDescription = updateTaskInput.value;
+
+  // Validate the new task description
+  const validatedInput = validateInput(newTaskDescription);
+
+  // If the input is not valid, return
+  if (!validatedInput) {
+    return;
+  }
+
+  // Get the task ID from the dataset of the update task input
+  const taskId = parseInt(updateTaskInput.dataset.taskId);
+
+  // Find the task in the task list by ID
+  const foundTask = findTaskById(taskId);
+
+  // Retrieve the list name of the found task
+  const listName = foundTask.listName;
+
+  // Update the task description with the new description
+  foundTask.description = newTaskDescription;
+
+  // Create a new task list item with the updated task
+  const newTaskListItem = createNewTaskListItem(foundTask);
+
+  // Add the new task list item to the corresponding task list
+  addTaskToList(newTaskListItem, listName);
+
+  //Reset the update task form and show the add task form
+  resetUpdateTaskForm(updateTaskInput, addTaskForm, updateTaskForm);
 }
 
 function loadItems() {

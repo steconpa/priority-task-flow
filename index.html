@@ -1,318 +1,245 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta 
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-    <meta
-      name="description"
-      content="Priority Task Flow es una incleible aplicación de gestión de tareas diseñada para ayudarte a priorizar, organizar y mantener el enfoque en tus actividades diarias. Con una interfaz intuitiva y practica, Priority Task Flow te permite optimizar tu productividad y alcanzar tus objetivos de manera eficiente."
-    />
-    <meta 
-      property="og:title" content="Priority Task Flow"/>
-    <meta
-      property="og:description"
-      content="Prioriza, organiza, concéntrate y que todo fluya con Priority Task Flow"
-    />
-    <meta property="og:image" content="images/ogImage.png" />
-    <meta name="author" content="Stevens Contreras" />
-    <meta name="email" content="stevens.contreras@uniminuto.edu.co" />
-    <meta name="profile" content="https://github.com/steconpa" />
 
-    <link rel="icon" href="icons/favicon.png" type="image/png" />
-    <link rel="shortcut icon" href="icons/favicon.png" type="image/png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Indie+Flower&&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/normalize.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Priority Task Flow es una incleible aplicación de gestión de tareas diseñada para ayudarte a priorizar, organizar y mantener el enfoque en tus actividades diarias. Con una interfaz intuitiva y practica, Priority Task Flow te permite optimizar tu productividad y alcanzar tus objetivos de manera eficiente." />
+  <meta property="og:title" content="Priority Task Flow" />
+  <meta property="og:description" content="Prioriza, organiza, concéntrate y que todo fluya con Priority Task Flow" />
+  <meta property="og:image" content="images/ogImage.png" />
+  <meta name="author" content="Stevens Contreras" />
+  <meta name="email" content="stevens.contreras@uniminuto.edu.co" />
+  <meta name="profile" content="https://github.com/steconpa" />
 
-    <title>Priority Task Flow</title>
-  </head>
-  <body>
-    <header class="header-curved" id="header-curved" role="banner">
-      
-      <h1 class="principal-tittle">
-        <a id="img-logo" href="index.html">
-          <img src="/icons/logo-flow.png" alt="Priority Task Flow" />
-        </a>
-          Priority Task Flow
-      </h1>
+  <link rel="icon" href="icons/favicon.png" type="image/png" />
+  <link rel="shortcut icon" href="icons/favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Indie+Flower&&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/normalize.css" />
 
-      <nav>
-        <ul class="principal-menu" id="principal-menu" role="menu">
-          <li role="menuitem">
-            <a href="#add-task-section" alt="Agregue tareas">
-              Agregue
-            </a>
-          </li>
-          <li>
-            <img src="icons/circulo-blanco-16.png">
-          </li>
-          <li role="menuitem">
-            <a href="#priority-sort-section" alt="Clasifique las tareas">
-              Clasifique
-            </a>
-          </li>
-          <li>
-            <img src="icons/circulo-blanco-16.png">
-          </li>
-          <li role="menuitem">
-            <a href="#focus-on-section" alt="Priorice las tareas">
-              Priorice
-            </a>
-          </li>
-          <li>
-            <img src="icons/circulo-blanco-16.png">
-          </li>
-          <li role="menuitem">
-            <a href="#focus-on-section" alt="Enfoquese en seis tareas">
-              Enfoquese
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </header>
+  <title>Priority Task Flow</title>
+</head>
 
-    <section id="task-in-progress">
-      <div id="current-date"></div>
-      <textarea 
-        type="text" 
-        class="taskDescription-inProgress" 
-        id ="" 
-        readonly>
+<body>
+  <header class="header-curved" id="header-curved" role="banner">
+
+    <h1 class="principal-tittle">
+      <a id="img-logo" href="index.html">
+        <img src="/icons/logo-flow.png" alt="Priority Task Flow" />
+      </a>
+      Priority Task Flow
+    </h1>
+
+    <nav>
+      <ul class="principal-menu" id="principal-menu" role="menu">
+        <li role="menuitem">
+          <a href="#add-task-section" alt="Agregue tareas">
+            Agregue
+          </a>
+        </li>
+        <li>
+          <img src="icons/circulo-blanco-16.png">
+        </li>
+        <li role="menuitem">
+          <a href="#priority-sort-section" alt="Clasifique las tareas">
+            Clasifique
+          </a>
+        </li>
+        <li>
+          <img src="icons/circulo-blanco-16.png">
+        </li>
+        <li role="menuitem">
+          <a href="#focus-on-section" alt="Priorice las tareas">
+            Priorice
+          </a>
+        </li>
+        <li>
+          <img src="icons/circulo-blanco-16.png">
+        </li>
+        <li role="menuitem">
+          <a href="#focus-on-section" alt="Enfoquese en seis tareas">
+            Enfoquese
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="task-in-progress">
+    <div id="current-date"></div>
+    <textarea type="text" class="taskDescription-inProgress" id="" readonly>
       </textarea>
-    </section>
-      
-    <sidebar>
-      <section 
-        id="add-task-section"
-        class="add-task-section"
-        title="Agregue sus tareas"
-      >
-        <h2 class="h2-tittle-section">Agregue</h2>
-        
-        <form id="add-task-form" class="add-task-form" action="">
-          <textarea
-            id="new-task-input"
-            rows="3"
-            placeholder="Nueva tarea"
-            maxlength="250"
-            required
-          ></textarea>
-          <div>
-            <button
-              type="submit"
-              class="add-new-task-button"
-              name="add-new-task-button"
-            >
-              Aceptar
-          </button>
-          </div>
-        </form>
+  </section>
 
-        <form id="update-task-form" class="update-task-form" action="">
-          <textarea
-            id="update-task-input"
-            rows="3"
-            maxlength="250"
-            data-task-id="0"
-          ></textarea>
-          <div>
-            <button
-              type="submit"
-              class="update-task-button"
-              name="update-task-button"
-            >
-              Aceptar
-          </button>
-          <button
-              type="submit"
-              class="delete-task-button"
-              name="delete-task-button"
-            >
-              Eliminar
-          </button>
-          </div>
-        </form>
-      </section>
-      <section 
-        id="classify-task-section"
-        class="classify-task-section"
-        title="Clasifique sus tareas"
-      >
-        <h2 class="h2-tittle-section">Clasifique</h2>
-        <ul id="uncategorized-to-do-list" role="list">
-  
-        </ul>
-        
-      </section>
+  <sidebar>
+    <section id="add-task-section" class="add-task-section" title="Agregue sus tareas">
+      <h2 class="h2-tittle-section">Agregue</h2>
 
-    </sidebar>
-
-    <main>
-      <section 
-        id="priority-sort-section" 
-        class="priority-sort-section"
-        title="Ordene por prioridad"
-      >
-        <h2 class="h2-tittle-section">Priorice</h2>
-        
-        <details id="red-to-do-list-details">
-          <summary 
-            class="red-to-do-list-summary" 
-            aria-expanded="false" 
-            aria-controls="red-to-do-list"
-          >
-            urgente + importante
-          </summary>
-
-          <table>
-            <thead class="red-to-do-list" id="red-to-do-list">
-              <tr>
-                <th>Tarea</th>
-                <th>Fecha limite</th>
-                <th>Priorizar</th>
-                <th>Reclasificar</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="">
-                <td class="task-description-td">Comprar leche en el supermercado</td>
-                <td>En progreso</td>
-                <td>Baja</td>
-                <td>Reclasificar</td>
-              </tr>
-              <tr>
-                <td id="tarea2">Enviar el informe por correo electrónico</td>
-                <td id="estado2">Completada</td>
-                <td id="prioridad2">Alta</td>
-              </tr>
-              <!-- Agrega más filas con tareas y asigna ids a los td según necesites -->
-            </tbody>
-          </table>
-        </details>
-              
-              <details id="orange-to-do-list-details">
-                <summary class="orange-to-do-list-summary" aria-expanded="false" aria-controls="orange-to-do-list">
-                  importante + no urgente
-                </summary>
-                <ul class="orange-to-do-list" id="orange-to-do-list"></ul>
-              </details>
-              
-              <details id="yellow-to-do-list-details" aria-expanded="false" aria-controls="yellow-to-do-list">
-                <summary class="yellow-to-do-list-summary">
-                  urgente + no importante
-                </summary>
-                <ul class="yellow-to-do-list" id="yellow-to-do-list"></ul>
-              </details>
-              
-              <details id="blue-to-do-list-details">
-                <summary class="blue-to-do-list-summary" aria-expanded="false" aria-controls="blue-to-do-list">
-                  pendientes priorizar
-                </summary>
-                <ul class="blue-to-do-list" id="blue-to-do-list"></ul>
-              </details>
-            </section>
-      <section id="focus-on-section" name="focus-on-section">
-        <h2 class="h2-tittle-section">
-          Enfoquese en seis 
-          <button class="taskloader" id="taskloader">
-            <img src="../icons/icons8-download-32.png">
-          </button>
-        </h2>
-        <ul id="focusOn-sixList"></ul>
-      </section>
-    </main>
-
-    <footer>
-      <p>Elaborado por Stevens Contreras &nbsp;</p>
-      <p>
-        <a href="https://www.linkedin.com/in/stecop" target="_blank">
-          <img
-            src="icons/icons8-linkedin-96.png"
-            alt="Enlace a mi perfil de LinkedIn"
-        /></a>
-        <a href="https://github.com/steconpa" target="_blank">
-          <img
-            src="icons/icons8-github-96.png"
-            alt="Enlace a mi perfil de GitHub"
-        /></a>
-      </p>
-      <p>
-        Iconos de la página tomados de
-        <a href="https://icons8.com/" target="_blank">Icon8</a>
-      </p>
-    </footer>
-
-    <template id="new-uncategorized-task-template">
-      <li class="task-list-item">
-        <span class="task-description" data-task-id =""></span>
-        <div class="category-buttons">
-          <button 
-            type="button" 
-            class="button-assign-task-red-list"
-            value="red-to-do-list"
-          >
-            <img 
-              src="icons/icons8-red-circle-16.png" 
-              alt="Es importante y urgente"
-            >
-          </button>
-          <button 
-            type="button"
-            class="button-assign-task-orange-list"
-            value="orange-to-do-list"
-          >
-            <img 
-              src="icons/icons8-orange-circle-16.png" 
-              alt="Es importante pero no urgente"
-            >
-          </button>
-          <button 
-            type="button" 
-            class="button-assign-task-yellow-list"
-            value="yellow-to-do-list"
-          >
-            <img 
-              src="icons/icons8-yellow-circle-16.png" 
-              alt="No es importante pero si urgente"
-            >
-          </button>
-          <button 
-            type="button"
-            class="button-assign-blue-list"
-            value="blue-to-do-list"
-          >
-            <img 
-              src="icons/icons8-blue-circle-16.png" 
-              alt="No es importante ni urgente"
-            >
+      <form id="add-task-form" class="add-task-form" action="">
+        <textarea id="new-task-input" rows="3" placeholder="Nueva tarea" maxlength="250" required></textarea>
+        <div>
+          <button type="submit" class="add-new-task-button" name="add-new-task-button">
+            Aceptar
           </button>
         </div>
-      </li>
-    </template>
-    
-    <template id="focusOn-elementsList">
-      <li class="taskElement-focusOn" id="">
-        <button class="return-task-button">
-          <img src="icons/icons8-go-back-icon-32.png">
-        </button>
-        <span class="taskDescription-elementList">
+      </form>
 
-        </span>
-        <button class="start-task-button">
-          <img src="icons/icons8-play-icon-32.png">
-        </button>
-      </li>
-    </template>
+      <form id="update-task-form" class="update-task-form" action="">
+        <textarea id="update-task-input" rows="3" maxlength="250" data-task-id="0"></textarea>
+        <div>
+          <button type="submit" class="update-task-button" name="update-task-button">
+            Aceptar
+          </button>
+          <button type="submit" class="delete-task-button" name="delete-task-button">
+            Eliminar
+          </button>
+        </div>
+      </form>
+    </section>
+    <section id="classify-task-section" class="classify-task-section" title="Clasifique sus tareas">
+      <h2 class="h2-tittle-section">Clasifique</h2>
+      <ul id="uncategorized-to-do-list" role="list">
 
-    <script src="js/main.js"></script>
-  </body>
+      </ul>
+    </section>
+  </sidebar>
+
+  <main>
+    <section id="priority-sort-section" class="priority-sort-section" title="Ordene por prioridad">
+      <h2 class="h2-tittle-section">Priorice</h2>
+
+      <details id="red-to-do-list-details">
+        <summary class="red-to-do-list-summary" aria-expanded="false" aria-controls="red-to-do-list">
+          importante + urgente
+        </summary>
+
+        <table class="red-to-do-list-table" id="red-to-do-list-table">
+          <thead>
+            <tr>
+              <th>Tarea</th>
+              <th>Fecha limite</th>
+              <th>Priorizar</th>
+              <th>Reclasificar</th>
+            </tr>
+          </thead>
+          <tbody class="red-to-do-list" id="red-to-do-list">
+            <tr>
+              <td class="task-description">Actualizar el procedimiento de atención de urgencias en caso de sismos en lugares encerrados con más de 250 perosonas según las normas de seguridad intenacionales de 20021 y nacionales de 2022.
+              </td>
+              <td class="task-due-date">En progreso</td>
+              <td class="task-position">1<button> <img src="icons/icons8-arriba-16.png"
+                    alt="subir de pisición"></button></td>
+              <td class="task-category-buttons">
+                <button type="button" class="button-assign-task-red-list" value="red-to-do-list">
+                  <img src="icons/icons8-red-circle-16.png" alt="Es importante y urgente">
+                </button>
+                <button type="button" class="button-assign-task-orange-list" value="orange-to-do-list">
+                  <img src="icons/icons8-orange-circle-16.png" alt="Es importante pero no urgente">
+                </button>
+                <button type="button" class="button-assign-task-yellow-list" value="yellow-to-do-list">
+                  <img src="icons/icons8-yellow-circle-16.png" alt="No es importante pero si urgente">
+                </button>
+                <button type="button" class="button-assign-blue-list" value="blue-to-do-list">
+                  <img src="icons/icons8-blue-circle-16.png" alt="No es importante ni urgente">
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td id="tarea2">Enviar el informe por correo electrónico</td>
+              <td id="estado2">Completada</td>
+              <td id="prioridad2">Alta</td>
+            </tr>
+            <!-- Agrega más filas con tareas y asigna ids a los td según necesites -->
+          </tbody>
+        </table>
+      </details>
+
+      <details id="orange-to-do-list-details">
+        <summary class="orange-to-do-list-summary" aria-expanded="false" aria-controls="orange-to-do-list">
+          importante + no urgente
+        </summary>
+        <ul class="orange-to-do-list" id="orange-to-do-list"></ul>
+      </details>
+
+      <details id="yellow-to-do-list-details" aria-expanded="false" aria-controls="yellow-to-do-list">
+        <summary class="yellow-to-do-list-summary">
+          urgente + no importante
+        </summary>
+        <ul class="yellow-to-do-list" id="yellow-to-do-list"></ul>
+      </details>
+
+      <details id="blue-to-do-list-details">
+        <summary class="blue-to-do-list-summary" aria-expanded="false" aria-controls="blue-to-do-list">
+          pendientes priorizar
+        </summary>
+        <ul class="blue-to-do-list" id="blue-to-do-list"></ul>
+      </details>
+    </section>
+    <section id="focus-on-section" name="focus-on-section">
+      <h2 class="h2-tittle-section">
+        Enfoquese en seis
+        <button class="taskloader" id="taskloader">
+          <img src="../icons/icons8-download-32.png">
+        </button>
+      </h2>
+      <ul id="focusOn-sixList"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Elaborado por Stevens Contreras &nbsp;</p>
+    <p>
+      <a href="https://www.linkedin.com/in/stecop" target="_blank">
+        <img src="icons/icons8-linkedin-96.png" alt="Enlace a mi perfil de LinkedIn" /></a>
+      <a href="https://github.com/steconpa" target="_blank">
+        <img src="icons/icons8-github-96.png" alt="Enlace a mi perfil de GitHub" /></a>
+    </p>
+    <p>
+      Iconos de la página tomados de
+      <a href="https://icons8.com/" target="_blank">Icon8</a>
+    </p>
+  </footer>
+
+  <template id="new-uncategorized-task-template">
+    <li class="task-list-item">
+      <span class="task-description" data-task-id=""></span>
+      <div class="category-buttons">
+        <button type="button" class="button-assign-task-red-list" value="red-to-do-list">
+          <img src="icons/icons8-red-circle-16.png" alt="Es importante y urgente">
+        </button>
+        <button type="button" class="button-assign-task-orange-list" value="orange-to-do-list">
+          <img src="icons/icons8-orange-circle-16.png" alt="Es importante pero no urgente">
+        </button>
+        <button type="button" class="button-assign-task-yellow-list" value="yellow-to-do-list">
+          <img src="icons/icons8-yellow-circle-16.png" alt="No es importante pero si urgente">
+        </button>
+        <button type="button" class="button-assign-blue-list" value="blue-to-do-list">
+          <img src="icons/icons8-blue-circle-16.png" alt="No es importante ni urgente">
+        </button>
+      </div>
+    </li>
+  </template>
+
+  <template id="focusOn-elementsList">
+    <li class="taskElement-focusOn" id="">
+      <button class="return-task-button">
+        <img src="icons/icons8-go-back-icon-32.png">
+      </button>
+      <span class="taskDescription-elementList">
+
+      </span>
+      <button class="start-task-button">
+        <img src="icons/icons8-play-icon-32.png">
+      </button>
+    </li>
+  </template>
+
+  <script src="js/main.js"></script>
+</body>
+
 </html>
