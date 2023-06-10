@@ -276,9 +276,13 @@ form#update-task-form button {
   margin: 5px ;
 }
 
+/*Botones redondos*/
 .category-buttons > button,
+td.task-recategory-buttons > button,
+td.task-position > button,
 .return-task-button,
 .start-task-button {
+  position: relative;
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -289,12 +293,43 @@ form#update-task-form button {
   overflow: visible;
 }
 
+.category-buttons > button::before,
+td.task-recategory-buttons > button::before,
+td.task-position > button::before,
+.return-task-button::before,
+.start-task-button::before {
+  content: attr(data-tooltip);
+  font-size: xx-small;
+  position: absolute;
+  left: 150%;
+  top: 100%;
+  padding: 5px;
+  transform: translateX(-50%);
+  background-color: gray;
+  color: white;
+  border-radius: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  white-space: nowrap;
+  z-index: 9999;
+}
+
+.category-buttons > button:hover::before,
+td.task-recategory-buttons > button:hover::before,
+td.task-position > button:hover::before,
+.return-task-button:hover::before,
+.start-task-button:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
 /*Lista de tareas no categorizadas*/
 ul#uncategorized-to-do-list {
 padding-left: 5px;
 }
 
-li.task-list-item {
+li.task-element-item {
   display: flex;
   align-items:center;
   column-gap: 5px;
@@ -303,7 +338,7 @@ li.task-list-item {
   border-bottom: silver solid 1px;
 }
 
-li.task-list-item > .category-buttons {
+li.task-element-item > .category-buttons {
   flex-basis: 32px;
 }
 
@@ -321,37 +356,54 @@ span.task-description {
   justify-content: center;
 }
 
+/*Sección de categorias */
 main {
   grid-area: main;
   min-height: 75dvh;
 }
-/*Tablas de categorias */
 
 table {
   width: 100%;
 }
 
-th{
+th, td {
+  vertical-align: middle;
+  border-bottom: 1px solid silver;
+}
+
+th {
   font-size: x-small;
   color: gray;
-  text-align: left; /* Alinea el texto a la izquierda */
-  border-bottom: solid 1px silver;
-}
-
-th:first-child {
-  flex: 1; /* La primera columna ocupa el resto del espacio disponible */
-}
-
-th:not(:first-child) {
-  width: auto; /* Las demás columnas se ajustan automáticamente al contenido */
+  text-align: left;
 }
 
 td {
   font-size: small;
-  padding: 10px 5px 10px 5px;
-  border-bottom: silver solid 1px;
+  padding: 10px 5px;
 }
 
+td.task-description {
+  flex: 1;
+}
+
+td.task-due-date{
+  width: 96px;;
+}
+
+td.task-position{
+  width: 32px;
+  text-align: center;
+}
+
+td.task-recategory-buttons{
+  width: 80px;
+}
+
+input.task-due-date-input{
+  border: none;
+}
+
+/*Seccion de enfoque*/
 #focus-on-section {
   display: flex;
   flex-direction: column;

@@ -3,14 +3,20 @@ class Task {
 
   constructor(description, listName) {
     this._id = ++Task.count;
+    this._creationDate = new Date();
     this._description = description;
     this._listName = listName;
-    this._position = null;
+    this._position = 0;
     this._dueDate = null;
+    this._onFocus = false;
   }
 
   get id() {
     return this._id;
+  }
+
+  get creationDate() {
+    return this._creationDate;
   }
 
   get description() {
@@ -83,7 +89,7 @@ const yellowToDoListDetails = document.querySelector(
 
 // Event listeners
 addItemButton.addEventListener("click", addNewTaskToDoList);
-updateTaskButton.addEventListener("click",updateTaskListElement);
+updateTaskButton.addEventListener("click",updateTaskElement);
 deleteTaskButton.addEventListener("click",deleteTaskElement);
 taskLoaderButton.addEventListener("click", loadItems);
 
@@ -121,6 +127,11 @@ function deleteTaskById(taskId) {
   toDoListTasks = toDoListTasks.filter((task) => task.id !== taskId);
 }
 
+function toggleListDetails(lengthCurrentList, listDetailsName) {
+  const listDetails = document.getElementById(`${listDetailsName}-details`);
+  listDetails.open = lengthCurrentList > 0;
+}
+
 /*
  * Validates the input value for a task.
  * @param {string} inputValue - The input value to validate.
@@ -140,75 +151,25 @@ function validateInput(inputValue) {
   return isValid ? valueWithoutLines : false;
 }
 
-// Manejo de clasificaciones
-function handleClassification(event) {
-  const li = event.currentTarget.closest(".task-elementList");
-  const currentButton = li.querySelector(".current-button button");
-  const buttonsDropdownList = li.querySelectorAll(".dropdown-list button");
-  const idValue = parseInt(li.id);
-  const buttonValue = event.target.value;
-  const foundTask = findTaskById(idValue);
-  const actualList = foundTask.listName;
-  const actualToDoList = document.getElementsByClassName(actualList);
-  const actualToDoListDetails = actualToDoList[0].parentNode;
+function classifyTask(event) {
+  const listNameValue = event.currentTarget.getAttribute("value");
+  const taskId = parseInt(event.currentTarget.getAttribute("data-task-id"));
+  const taskListItem = event.currentTarget.closest(".task-element-item");
 
-  const classValues = {
-    "red-to-do-list": [
-      { class: "changeClass-redButton", value: "red-to-do-list" },
-      { class: "changeClass-orangeButton", value: "orange-to-do-list" },
-      { class: "changeClass-yellowButton", value: "yellow-to-do-list" },
-      { class: "changeClass-blueButton", value: "blue-to-do-list" },
-    ],
-    "orange-to-do-list": [
-      { class: "changeClass-orangeButton", value: "orange-to-do-list" },
-      { class: "changeClass-redButton", value: "red-to-do-list" },
-      { class: "changeClass-yellowButton", value: "yellow-to-do-list" },
-      { class: "changeClass-blueButton", value: "blue-to-do-list" },
-    ],
-    "yellow-to-do-list": [
-      { class: "changeClass-yellowButton", value: "yellow-to-do-list" },
-      { class: "changeClass-redButton", value: "red-to-do-list" },
-      { class: "changeClass-orangeButton", value: "orange-to-do-list" },
-      { class: "changeClass-blueButton", value: "blue-to-do-list" },
-    ],
-    "blue-to-do-list": [
-      { class: "changeClass-blueButton", value: "blue-to-do-list" },
-      { class: "changeClass-redButton", value: "red-to-do-list" },
-      { class: "changeClass-orangeButton", value: "orange-to-do-list" },
-      { class: "changeClass-yellowButton", value: "yellow-to-do-list" },
-    ],
-  };
+  const task = findTaskById(taskId);
+  task.listName = listNameValue;
 
-  const selectedClassValues = classValues[buttonValue];
+  const newTaskRowItem = createNewTaskRowItem(task);
 
-  foundTask.listName = buttonValue;
-  currentButton.classList.remove(currentButton.classList.value);
-  currentButton.classList.add(selectedClassValues[0].class);
-  currentButton.value = buttonValue;
+  const tableBody = document.getElementById(listNameValue);
 
-  buttonsDropdownList.forEach((button, index) => {
-    const element = selectedClassValues[index + 1];
-    button.classList.remove(button.classList.value);
-    button.classList.add(element.class);
-    button.value = element.value;
-  });
+  tableBody.appendChild(newTaskRowItem);
 
-  const targetDetails = document.getElementById(buttonValue + "-details");
+  // Remove the task from its current list
+  taskListItem.remove();
 
-  // Agregar la tarea a la lista que corresponde
-  addTaskToList(li, targetDetails);
-  updateTaskPositions(foundTask.listName);
-  updateTaskPositions(actualList);
-
-  li.querySelector(".custom-dropdown").open = false;
-
-  checkListLength(actualToDoList[0].childNodes.length, actualToDoListDetails);
-}
-
-function checkListLength(currentToDoList, currentDetailsElement) {
-  if (currentToDoList === 0) {
-    currentDetailsElement.open = false;
-  }
+  // Toggle list details based on the list length
+  toggleListDetails(tableBody.children.length, listNameValue);
 }
 
 /**
@@ -240,13 +201,13 @@ function editTaskDescription(event) {
 }
 
 function upListItem(event) {
-  const listItem = event.target.closest("li");
-  const previousListItem = listItem.previousElementSibling;
+  const rowItem = event.target.closest("tr");
+  const previousRowItem = rowItem.previousElementSibling;
 
-  if (previousListItem) {
-    listItem.parentNode.insertBefore(listItem, previousListItem);
-    const listId = listItem.parentNode.id;
-    updateTaskPositions(listId);
+  if (previousRowItem) {
+    rowItem.parentNode.insertBefore(rowItem, previousRowItem);
+    //const listId = listItem.parentNode.id;
+    //updateTaskPositions(listId);
   }
 }
 
@@ -264,24 +225,43 @@ function createNewTaskListItem(newTask) {
 
   // Get references to the task description and buttons within the new task list item
   const taskDescription = newTaskListItem.querySelector(".task-description");
-  const redButton = newTaskListItem.querySelector(".button-assign-task-red-list");
-  const orangeButton = newTaskListItem.querySelector(".button-assign-task-orange-list");
-  const yellowButton = newTaskListItem.querySelector(".button-assign-task-yellow-list");
-  const blueButton = newTaskListItem.querySelector(".button-assign-blue-list");
-
-  // Add event listeners to the buttons and task description
-  blueButton.addEventListener("click", handleClassification);
-  redButton.addEventListener("click", handleClassification);
-  orangeButton.addEventListener("click", handleClassification);
-  yellowButton.addEventListener("click", handleClassification);
   taskDescription.addEventListener("dblclick", editTaskDescription);
-
-  // Set the task description and task ID as data attribute
   taskDescription.textContent = newTask.description;
   taskDescription.dataset.taskId = newTask.id;
+  
+  const buttons = newTaskListItem.querySelectorAll("button");
+  buttons.forEach((button) => {
+    button.addEventListener("click", classifyTask);
+    button.dataset.taskId = newTask.id;
+  });
 
   // Return the new task list item element
   return newTaskListItem;
+}
+
+function createNewTaskRowItem(taskObject) {
+  // Get the template for a new uncategorized task
+  const template = document.getElementById("task-row-item");
+  const clonedRow = template.content.cloneNode(true).firstElementChild;
+
+  const clonedDescription = clonedRow.querySelector(".task-description");
+  clonedDescription.dataset.taskId = taskObject.id;
+  clonedDescription.textContent = taskObject.description;
+  clonedDescription.addEventListener("dblclick", editTaskDescription);
+
+  const clonedDueDate = clonedRow.querySelector(".task-due-date");
+  const clonedDueDateInput = clonedDueDate.querySelector(".task-due-date-input");
+  clonedDueDateInput.value = taskObject.dueDate || "";
+  clonedDueDate.dataset.taskDueDate = taskObject.dueDate || "";
+
+  const clonedCategoryButtons = clonedRow.querySelectorAll(".task-recategory-buttons button");
+  clonedCategoryButtons.forEach((button) => {
+    button.addEventListener("click", classifyTask);
+    button.dataset.taskId = taskObject.id;
+  });
+
+  // Return the new task list item element
+  return clonedRow;
 }
 
 /*
@@ -320,7 +300,7 @@ function addNewTaskToDoList(event) {
 }
 
 /**
- * Reset the update task form and show the add task form.
+ * Reset the update-task-form and show the-add-task-form.
  * @param {HTMLElement} updateTaskInput - The update task input element.
  * @param {HTMLElement} addTaskForm - The add task form element.
  * @param {HTMLElement} updateTaskForm - The update task form element.
@@ -358,7 +338,7 @@ function deleteTaskElement(event) {
  * Updates the task list element with the new task description.
  * @param {Event} event - event click on the button update-task-button.
  */
-function updateTaskListElement(event) {
+function updateTaskElement(event) {
   event.preventDefault();
 
   // Get the add task form and update task form elements
@@ -390,10 +370,15 @@ function updateTaskListElement(event) {
   foundTask.description = newTaskDescription;
 
   // Create a new task list item with the updated task
-  const newTaskListItem = createNewTaskListItem(foundTask);
+  let newTaskItem
+  if (listName === "uncategorized-to-do-list") {
+    newTaskItem = createNewTaskListItem(foundTask);
+  } else {
+    newTaskItem = createNewTaskRowItem(foundTask)
+  }
 
   // Add the new task list item to the corresponding task list
-  addTaskToList(newTaskListItem, listName);
+  addTaskToList(newTaskItem, listName);
 
   //Reset the update task form and show the add task form
   resetUpdateTaskForm(updateTaskInput, addTaskForm, updateTaskForm);

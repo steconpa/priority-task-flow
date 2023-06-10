@@ -77,7 +77,7 @@
   </section>
 
   <sidebar>
-    <section id="add-task-section" class="add-task-section" title="Agregue sus tareas">
+    <section id="add-task-section" class="add-task-section">
       <h2 class="h2-tittle-section">Agregue</h2>
 
       <form id="add-task-form" class="add-task-form" action="">
@@ -101,7 +101,7 @@
         </div>
       </form>
     </section>
-    <section id="classify-task-section" class="classify-task-section" title="Clasifique sus tareas">
+    <section id="classify-task-section" class="classify-task-section">
       <h2 class="h2-tittle-section">Clasifique</h2>
       <ul id="uncategorized-to-do-list" role="list">
 
@@ -110,12 +110,12 @@
   </sidebar>
 
   <main>
-    <section id="priority-sort-section" class="priority-sort-section" title="Ordene por prioridad">
+    <section id="priority-sort-section" class="priority-sort-section">
       <h2 class="h2-tittle-section">Priorice</h2>
 
       <details id="red-to-do-list-details">
         <summary class="red-to-do-list-summary" aria-expanded="false" aria-controls="red-to-do-list">
-          importante + urgente
+          Importante + urgente
         </summary>
 
         <table class="red-to-do-list-table" id="red-to-do-list-table">
@@ -128,56 +128,65 @@
             </tr>
           </thead>
           <tbody class="red-to-do-list" id="red-to-do-list">
-            <tr>
-              <td class="task-description">Actualizar el procedimiento de atención de urgencias en caso de sismos en lugares encerrados con más de 250 perosonas según las normas de seguridad intenacionales de 20021 y nacionales de 2022.
-              </td>
-              <td class="task-due-date">En progreso</td>
-              <td class="task-position">1<button> <img src="icons/icons8-arriba-16.png"
-                    alt="subir de pisición"></button></td>
-              <td class="task-category-buttons">
-                <button type="button" class="button-assign-task-red-list" value="red-to-do-list">
-                  <img src="icons/icons8-red-circle-16.png" alt="Es importante y urgente">
-                </button>
-                <button type="button" class="button-assign-task-orange-list" value="orange-to-do-list">
-                  <img src="icons/icons8-orange-circle-16.png" alt="Es importante pero no urgente">
-                </button>
-                <button type="button" class="button-assign-task-yellow-list" value="yellow-to-do-list">
-                  <img src="icons/icons8-yellow-circle-16.png" alt="No es importante pero si urgente">
-                </button>
-                <button type="button" class="button-assign-blue-list" value="blue-to-do-list">
-                  <img src="icons/icons8-blue-circle-16.png" alt="No es importante ni urgente">
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td id="tarea2">Enviar el informe por correo electrónico</td>
-              <td id="estado2">Completada</td>
-              <td id="prioridad2">Alta</td>
-            </tr>
-            <!-- Agrega más filas con tareas y asigna ids a los td según necesites -->
+          
           </tbody>
         </table>
       </details>
 
       <details id="orange-to-do-list-details">
         <summary class="orange-to-do-list-summary" aria-expanded="false" aria-controls="orange-to-do-list">
-          importante + no urgente
+          Importante + no urgente
         </summary>
-        <ul class="orange-to-do-list" id="orange-to-do-list"></ul>
+        <table class="orange-to-do-list-table" id="orange-to-do-list-table">
+          <thead>
+            <tr>
+              <th>Tarea</th>
+              <th>Fecha limite</th>
+              <th>Priorizar</th>
+              <th>Reclasificar</th>
+            </tr>
+          </thead>
+          <tbody class="orange-to-do-list" id="orange-to-do-list">
+          
+          </tbody>
+        </table>
       </details>
 
       <details id="yellow-to-do-list-details" aria-expanded="false" aria-controls="yellow-to-do-list">
         <summary class="yellow-to-do-list-summary">
-          urgente + no importante
+          Urgente + no importante
         </summary>
-        <ul class="yellow-to-do-list" id="yellow-to-do-list"></ul>
+        <table class="yellow-to-do-list-table" id="yellow-to-do-list-table">
+          <thead>
+            <tr>
+              <th>Tarea</th>
+              <th>Fecha limite</th>
+              <th>Priorizar</th>
+              <th>Reclasificar</th>
+            </tr>
+          </thead>
+          <tbody class="yellow-to-do-list" id="yellow-to-do-list">
+          
+          </tbody>
+        </table>
       </details>
 
       <details id="blue-to-do-list-details">
         <summary class="blue-to-do-list-summary" aria-expanded="false" aria-controls="blue-to-do-list">
-          pendientes priorizar
+          Ni importante + Ni urgente
         </summary>
-        <ul class="blue-to-do-list" id="blue-to-do-list"></ul>
+        <table class="blue-to-do-list-table" id="blue-to-do-list-table">
+          <thead>
+            <tr>
+              <th>Tarea</th>
+              <th>Fecha limite</th>
+              <th>Priorizar</th>
+              <th>Reclasificar</th>
+            </tr>
+          </thead>
+          <tbody class="blue-to-do-list" id="blue-to-do-list">
+          </tbody>
+        </table>
       </details>
     </section>
     <section id="focus-on-section" name="focus-on-section">
@@ -206,23 +215,67 @@
   </footer>
 
   <template id="new-uncategorized-task-template">
-    <li class="task-list-item">
+    <li class="task-element-item">
       <span class="task-description" data-task-id=""></span>
       <div class="category-buttons">
-        <button type="button" class="button-assign-task-red-list" value="red-to-do-list">
-          <img src="icons/icons8-red-circle-16.png" alt="Es importante y urgente">
+        <button type="button" class="button-assign-task-red-list" 
+          data-tooltip="Importante y urgente" value="red-to-do-list" 
+          data-task-id="">
+          <img src="icons/icons8-red-circle-16.png">
         </button>
-        <button type="button" class="button-assign-task-orange-list" value="orange-to-do-list">
-          <img src="icons/icons8-orange-circle-16.png" alt="Es importante pero no urgente">
+        <button type="button" class="button-assign-task-orange-list" 
+          value="orange-to-do-list" data-tooltip="Importante pero no urgente"
+          data-task-id="">
+          <img src="icons/icons8-orange-circle-16.png">
         </button>
-        <button type="button" class="button-assign-task-yellow-list" value="yellow-to-do-list">
-          <img src="icons/icons8-yellow-circle-16.png" alt="No es importante pero si urgente">
+        <button type="button" class="button-assign-task-yellow-list" 
+          value="yellow-to-do-list" data-tooltip="No es importante pero si urgente"
+          data-task-id="">
+          <img src="icons/icons8-yellow-circle-16.png">
         </button>
-        <button type="button" class="button-assign-blue-list" value="blue-to-do-list">
-          <img src="icons/icons8-blue-circle-16.png" alt="No es importante ni urgente">
+        <button type="button" class="button-assign-blue-list"
+          value="blue-to-do-list" data-tooltip="No es importante ni urgente"
+          data-task-id="">
+          <img src="icons/icons8-blue-circle-16.png">
         </button>
       </div>
     </li>
+  </template>
+
+  <template id="task-row-item">
+    <tr class="task-element-item">
+      <td class="task-description" data-task-id="">Tarea 1</td>
+      <td class="task-due-date" data-task-due-date="">
+        <input type="date" class="task-due-date-input">
+      </td>
+      <td class="task-position" data-task-position="0">1
+        <button class="move-up-task-position-button" data-tooltip="Mover hacia arriba">
+          <img src="icons/icons8-arriba-16.png" alt="subir de posición">
+        </button>
+      </td>
+      <td class="task-recategory-buttons">
+        <button type="button" class="button-assign-task-red-list" 
+          data-tooltip="Importante y urgente" value="red-to-do-list" 
+          data-task-id="">
+          <img src="icons/icons8-red-circle-16.png">
+        </button>
+        <button type="button" class="button-assign-task-orange-list" 
+          value="orange-to-do-list" data-tooltip="Importante pero no urgente"
+          data-task-id="">
+          <img src="icons/icons8-orange-circle-16.png">
+        </button>
+        <button type="button" class="button-assign-task-yellow-list" 
+          value="yellow-to-do-list" data-tooltip="No es importante pero si urgente"
+          data-task-id="">
+          <img src="icons/icons8-yellow-circle-16.png">
+        </button>
+        <button type="button" class="button-assign-blue-list"
+          value="blue-to-do-list" data-tooltip="No es importante ni urgente"
+          data-task-id="">
+          <img src="icons/icons8-blue-circle-16.png">
+        </button>
+      </td>
+    </tr>
   </template>
 
   <template id="focusOn-elementsList">
