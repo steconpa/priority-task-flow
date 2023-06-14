@@ -115,7 +115,7 @@
 
       <details id="red-to-do-list-details">
         <summary class="red-to-do-list-summary" aria-expanded="false" aria-controls="red-to-do-list">
-          Importante + urgente
+          importante + urgente <span></span>
         </summary>
 
         <table class="red-to-do-list-table" id="red-to-do-list-table">
@@ -135,7 +135,7 @@
 
       <details id="orange-to-do-list-details">
         <summary class="orange-to-do-list-summary" aria-expanded="false" aria-controls="orange-to-do-list">
-          Importante + no urgente
+          importante + no urgente <span></span>
         </summary>
         <table class="orange-to-do-list-table" id="orange-to-do-list-table">
           <thead>
@@ -154,7 +154,7 @@
 
       <details id="yellow-to-do-list-details" aria-expanded="false" aria-controls="yellow-to-do-list">
         <summary class="yellow-to-do-list-summary">
-          Urgente + no importante
+          no importante + urgente <span></span>
         </summary>
         <table class="yellow-to-do-list-table" id="yellow-to-do-list-table">
           <thead>
@@ -173,7 +173,7 @@
 
       <details id="blue-to-do-list-details">
         <summary class="blue-to-do-list-summary" aria-expanded="false" aria-controls="blue-to-do-list">
-          Ni importante + Ni urgente
+          no importante + no urgente <span></span>
         </summary>
         <table class="blue-to-do-list-table" id="blue-to-do-list-table">
           <thead>
@@ -245,12 +245,13 @@
   <template id="task-row-item">
     <tr class="task-element-item">
       <td class="task-description" data-task-id="">Tarea 1</td>
-      <td class="task-due-date" data-task-due-date="">
-        <input type="date" class="task-due-date-input">
+      <td class="task-due-date">
+        <input type="date" class="task-due-date-input" data-task-id="">
       </td>
-      <td class="task-position" data-task-position="0">1
-        <button class="move-up-task-position-button" data-tooltip="Mover hacia arriba">
-          <img src="icons/icons8-arriba-16.png" alt="subir de posición">
+      <td class="task-position">
+        <button class="move-up-task-position-button" data-task-id=""
+         data-tooltip="Mover hacia arriba">
+         <img src="icons/icons8-arriba-16.png">
         </button>
       </td>
       <td class="task-recategory-buttons">

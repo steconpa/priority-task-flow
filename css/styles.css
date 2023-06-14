@@ -17,6 +17,7 @@ body {
     "sidebar main main main"
     "footer footer footer footer";
   font-family: 'Noto Sans', sans-serif;
+
 }
 
 ul {
@@ -124,127 +125,6 @@ sidebar {
   padding-left: 5px;
 }
 
-details {
-  display: inline-block;
-  border: none;
-  background-color: transparent;
-  padding: 0;
-  margin-bottom: 5px;
-}
-
-details summary {
-  display: inline-block;
-  width: 100%;
-  padding: 8px 0px 8px 0px;
-  cursor: pointer;
-  outline: none;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.red-to-do-list-summary {
-  color: #870000;
-  background-color: #FFB4B0;
-}
-
-details#red-to-do-list-details[open] summary.red-to-do-list-summary {
-  color: #FFB4B0;
-  background-color:#870000;
-}
-
-.orange-to-do-list-summary {
-  background-color: #FEC595;
-  color: #4B2011;
-}
-
-details#orange-to-do-list-details[open] summary.orange-to-do-list-summary {
-  background-color: #FFA500;
-  color: #4B2011;
-}
-
-.yellow-to-do-list-summary {
-  background-color: #FFFFCC;
-  color: #626100;
-}
-
-details#yellow-to-do-list-details[open] summary.yellow-to-do-list-summary {
-  background-color:#FDFD66;
-  color: #4E4E26;
-}
-
-.blue-to-do-list-summary {
-  color: #43469A;
-  background-color: #8BD5F3;
-}
-
-details#blue-to-do-list-details[open] summary.blue-to-do-list-summary {
-  color: #D3F7FF;
-  background-color: #3D408D;
-}
-
-details summary::-webkit-details-marker {
-  display: none;
-}
-
-details summary::before {
-  content: '+';
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-left: 2px;
-  margin-right: 8px;
-  text-align: center;
-  line-height: 16px;
-  font-weight: bold;
-  border-radius: 50%;
-  transition: transform 0.3s ease;
-}
-
-details#red-to-do-list-details summary.red-to-do-list-summary::before {
-  background-color: #870000;
-  color: #FFB4B0;
-}
-
-details#orange-to-do-list-details summary.orange-to-do-list-summary::before {
-  color: #FEC595;
-  background-color: #4B2011;
-}
-
-details#yellow-to-do-list-details summary.yellow-to-do-list-summary::before {
-  color: #FFFFCC;
-  background-color: #626100;
-}
-
-details#blue-to-do-list-details summary.blue-to-do-list-summary::before {
-  background-color: #43469A;
-  color: #8BD5F3;
-}
-
-details[open] summary::before {
-  content: '^';
-  transform: rotate(-180deg);
-}
-
-details#blue-to-do-list-details[open] summary.blue-to-do-list-summary::before {
-  color: #3D408D;
-  background-color: #D3F7FF;
-}
-
-details#yellow-to-do-list-details[open] summary.yellow-to-do-list-summary::before {
-  color:#FDFD66;
-  background-color: #4E4E26;
-}
-
-details#orange-to-do-list-details[open] summary.orange-to-do-list-summary::before {
-  color: #FFA500;
-  background-color: #4B2011;
-}
-
-details#red-to-do-list-details[open] summary.red-to-do-list-summary::before {
-  background-color: #FFB4B0;
-  color:#870000;
-}
-
 /*Agregar tareas*/
 form#add-task-form,
 form#update-task-form {
@@ -305,7 +185,7 @@ td.task-position > button::before,
   top: 100%;
   padding: 5px;
   transform: translateX(-50%);
-  background-color: gray;
+  background-color: #B3B3B3;
   color: white;
   border-radius: 3px;
   opacity: 0;
@@ -362,6 +242,59 @@ main {
   min-height: 75dvh;
 }
 
+details summary {
+  cursor: pointer;
+  position: relative;
+  padding: 10px 10px;
+}
+
+details summary::before {
+  content: "+";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 16px;
+  font-weight: bold;
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+  margin-right: 5px;
+}
+
+details summary.red-to-do-list-summary::before {
+  background-color: #E80000;
+  color:white;
+}
+
+details summary.orange-to-do-list-summary::before {
+  background-color: #B1560A;
+  color:white;
+}
+
+details summary.yellow-to-do-list-summary::before {
+  background-color: #FAB005;
+  color:white;
+}
+
+details summary.blue-to-do-list-summary::before {
+  background-color: #1A72BE;
+  color:white;
+}
+
+details[open] summary::before {
+  content: "^";
+  display: inline-block;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.red-to-do-list-summary:hover {
+  text-decoration: underline;
+}
+
 table {
   width: 100%;
 }
@@ -373,7 +306,7 @@ th, td {
 
 th {
   font-size: x-small;
-  color: gray;
+  color: #B3B3B3;
   text-align: left;
 }
 
@@ -387,7 +320,7 @@ td.task-description {
 }
 
 td.task-due-date{
-  width: 96px;;
+  width: 96px;
 }
 
 td.task-position{
@@ -401,6 +334,7 @@ td.task-recategory-buttons{
 
 input.task-due-date-input{
   border: none;
+  background-color: transparent;
 }
 
 /*Seccion de enfoque*/

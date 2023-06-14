@@ -40,7 +40,7 @@ class Task {
   }
 
   set position(newPosition) {
-    this._position = newPosition;
+    this._position = newPosition; 
   }
 
   get dueDate() {
@@ -51,6 +51,13 @@ class Task {
     this._dueDate = newDate;
   }
 
+  get onFocus() {
+    return this._onFocus;
+  }
+
+  set onFocus(booleanFocus) {
+    this._onFocus = booleanFocus;
+  }
 }
 
 let toDoListTasks = [];
@@ -78,14 +85,6 @@ const addItemButton = document.querySelector(".add-new-task-button");
 const updateTaskButton = document.querySelector(".update-task-button");
 const deleteTaskButton = document.querySelector(".delete-task-button");
 const taskLoaderButton = document.getElementById("taskloader");
-const blueToDoListDetails = document.querySelector("#blue-to-do-list-details");
-const redToDoListDetails = document.querySelector("#red-to-do-list-details");
-const orangeToDoListDetails = document.querySelector(
-  "#orange-to-do-list-details"
-);
-const yellowToDoListDetails = document.querySelector(
-  "#yellow-to-do-list-details"
-);
 
 // Event listeners
 addItemButton.addEventListener("click", addNewTaskToDoList);
@@ -107,29 +106,53 @@ function findTaskByIdAndListName(id, listName) {
   );
 }
 
-function updateTaskDescription(taskId, newDescription) {
-  const foundTask = findTaskById(taskId);
-  foundTask.description = newDescription;
+function decreasePositionByOne(tasks) {
+  tasks.forEach((task) => {
+    task.position -= 1;
+  });
 }
 
-function updateTaskPositions(listName) {
-  const list = document.getElementById(listName);
-  const taskElements = list.childNodes;
+function getTasksByListName(listName) {
+  const filteredTasks = toDoListTasks.filter((task) => {
+    return task.listName === listName && !task.onFocus;
+  });
 
-  for (let i = 0; i < taskElements.length; i++) {
-    const taskId = parseInt(taskElements[i].id);
-    const task = findTaskByIdAndListName(taskId, listName);
-    task.position = i + 1;
-  }
+  const sortedTasks = filteredTasks.sort((taskA, taskB) => {
+    return taskA.position - taskB.position;
+  });
+
+  return sortedTasks;
+}
+
+function getTasksByPositionAndList(position, listName) {
+  return toDoListTasks.filter((task) => task.listName === listName && task.position > position);
 }
 
 function deleteTaskById(taskId) {
   toDoListTasks = toDoListTasks.filter((task) => task.id !== taskId);
 }
 
-function toggleListDetails(lengthCurrentList, listDetailsName) {
-  const listDetails = document.getElementById(`${listDetailsName}-details`);
+function toggleListDetails(lengthCurrentList, listName) {
+  const listDetails = document.getElementById(`${listName}-details`);
+  const spanSummaryElement = document.querySelector(`.${listName}-summary span`);
+
+  spanSummaryElement.textContent = `(${lengthCurrentList})`;
+
   listDetails.open = lengthCurrentList > 0;
+
+  if (!listDetails.open) {
+    spanSummaryElement.textContent = "";
+  }
+}
+
+function formatDate(date) {
+  if (date instanceof Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  return "";
 }
 
 /*
@@ -152,24 +175,35 @@ function validateInput(inputValue) {
 }
 
 function classifyTask(event) {
-  const listNameValue = event.currentTarget.getAttribute("value");
+  const newListName = event.currentTarget.getAttribute("value");
   const taskId = parseInt(event.currentTarget.getAttribute("data-task-id"));
-  const taskListItem = event.currentTarget.closest(".task-element-item");
+  const taskItemElement = event.currentTarget.closest(".task-element-item");
 
   const task = findTaskById(taskId);
-  task.listName = listNameValue;
 
+  const previousList = task.listName;
+  const previusPosition = task.position;
+
+  task.listName = newListName;
+  const taksInListName = getTasksByListName(task.listName);
+  task.position = taksInListName.length;
+
+  if (previousList !== "uncategorized-to-do-list") {
+    const tasksToDecrease = getTasksByPositionAndList(previusPosition, previousList);
+    decreasePositionByOne(tasksToDecrease);
+    const taksInpreviousListName = getTasksByListName(previousList);
+    toggleListDetails(taksInpreviousListName.length, previousList);
+  }
+
+  const tableBody = document.getElementById(newListName);
   const newTaskRowItem = createNewTaskRowItem(task);
-
-  const tableBody = document.getElementById(listNameValue);
-
   tableBody.appendChild(newTaskRowItem);
 
   // Remove the task from its current list
-  taskListItem.remove();
+  taskItemElement.remove();
 
   // Toggle list details based on the list length
-  toggleListDetails(tableBody.children.length, listNameValue);
+  toggleListDetails(task.position, newListName);
 }
 
 /**
@@ -177,37 +211,90 @@ function classifyTask(event) {
  * @param {Event} event - dblclick event on the task description.
  */
 function editTaskDescription(event) {
-  // Get references to the add-task-form and update-task-form elements
+  // Obtener referencias a los elementos add-task-form y update-task-form
   const addTaskForm = document.getElementById("add-task-form");
   const updateTaskForm = document.getElementById("update-task-form");
 
-  // Get references to the necessary elements
+  // Obtener referencias a los elementos necesarios
   const inputEditTask = document.getElementById("update-task-input");
   const listItem = event.currentTarget.parentNode;
   const taskDescription = event.currentTarget.closest(".task-description");
   const taskId = parseInt(taskDescription.dataset.taskId);
 
-  // Hide the add task form and show the update task form
+  // Encontrar la tarea por su ID
+  const foundTask = findTaskById(taskId);
+
+  // Ocultar el formulario de agregar tarea y mostrar el formulario de actualizar tarea
   addTaskForm.style.display = "none";
   updateTaskForm.style.display = "flex";
 
-  // Set the task ID to the input and populate the input with the task description
+  // Establecer el ID de la tarea en el campo de entrada y llenarlo con la descripción de la tarea
   inputEditTask.dataset.taskId = taskId;
   inputEditTask.value = taskDescription.textContent;
   inputEditTask.focus();
 
-  // Remove the list item from the DOM
+  // Eliminar el elemento de la lista del DOM
   listItem.remove();
+
+  // Obtener las tareas que tienen una posición mayor a la tarea actual y el mismo nombre de lista
+  const tasksToDecrease = getTasksByPositionAndList(foundTask.position, foundTask.listName);
+  const taksInListName = getTasksByListName(foundTask.listName);
+  
+  // Toggle list details based on the list length
+  toggleListDetails(taksInListName.length-1, foundTask.listName);
+  
+  // Establecer la posición de la tarea encontrada en 0
+  foundTask.position = 0;
+
+  // Disminuir la posición en 1 de las tareas obtenidas
+  decreasePositionByOne(tasksToDecrease);
+
 }
 
 function upListItem(event) {
-  const rowItem = event.target.closest("tr");
+  // Obtener el ID de la tarea actual
+  const currentTaskId = parseInt(event.currentTarget.getAttribute("data-task-id"));
+
+  // Obtener el elemento de la fila actual y su fila anterior
+  const rowItem = event.currentTarget.closest("tr");
   const previousRowItem = rowItem.previousElementSibling;
 
+  // Verificar si existe una fila anterior
   if (previousRowItem) {
+    // Obtener el botón de mover hacia arriba en la fila anterior y su ID de tarea asociado
+    const moveUpButtonPrevious = previousRowItem.querySelector(".move-up-task-position-button");
+    const previousTaskId = parseInt(moveUpButtonPrevious.dataset.taskId);
+
+    // Obtener las tareas actual y anterior
+    const currentTask = findTaskById(currentTaskId);
+    const previousTask = findTaskById(previousTaskId);
+
+    // Actualizar las posiciones de las tareas
+    currentTask.position -= 1;
+    previousTask.position += 1;
+
+    // Mover la fila actual antes de la fila anterior en el DOM
     rowItem.parentNode.insertBefore(rowItem, previousRowItem);
-    //const listId = listItem.parentNode.id;
-    //updateTaskPositions(listId);
+  }
+}
+
+function updateTaskDueDate(event) {
+  const taskId = parseInt(event.currentTarget.dataset.taskId);
+  const task = findTaskById(taskId);
+
+  if (task) {
+    const inputDate = event.currentTarget.value;
+    const [year, month, day] = inputDate.split("-");
+    
+    // Obtener la diferencia de zona horaria en minutos
+    const timezoneOffset = new Date().getTimezoneOffset();
+    
+    // Crear una instancia de Date en la zona horaria local ajustando la fecha
+    const newDueDate = new Date(year, month - 1, day);
+    newDueDate.setMinutes(newDueDate.getMinutes() + timezoneOffset);
+    
+    // Actualizar la fecha de vencimiento de la tarea
+    task.dueDate = newDueDate;
   }
 }
 
@@ -249,10 +336,14 @@ function createNewTaskRowItem(taskObject) {
   clonedDescription.textContent = taskObject.description;
   clonedDescription.addEventListener("dblclick", editTaskDescription);
 
-  const clonedDueDate = clonedRow.querySelector(".task-due-date");
-  const clonedDueDateInput = clonedDueDate.querySelector(".task-due-date-input");
-  clonedDueDateInput.value = taskObject.dueDate || "";
-  clonedDueDate.dataset.taskDueDate = taskObject.dueDate || "";
+  const clonedDueDateInput = clonedRow.querySelector(".task-due-date-input");
+  clonedDueDateInput.value = formatDate(taskObject.dueDate) || "";
+  clonedDueDateInput.dataset.taskId = taskObject.id;
+  clonedDueDateInput.addEventListener("change", updateTaskDueDate);
+
+  const clonedMoveUp = clonedRow.querySelector(".move-up-task-position-button");
+  clonedMoveUp.addEventListener("click", upListItem);
+  clonedMoveUp.dataset.taskId = taskObject.id;
 
   const clonedCategoryButtons = clonedRow.querySelectorAll(".task-recategory-buttons button");
   clonedCategoryButtons.forEach((button) => {
@@ -365,6 +456,8 @@ function updateTaskElement(event) {
 
   // Retrieve the list name of the found task
   const listName = foundTask.listName;
+  const taksInListName = getTasksByListName(listName);
+  foundTask.position = taksInListName.length;
 
   // Update the task description with the new description
   foundTask.description = newTaskDescription;
@@ -379,6 +472,8 @@ function updateTaskElement(event) {
 
   // Add the new task list item to the corresponding task list
   addTaskToList(newTaskItem, listName);
+  // Toggle list details based on the list length
+  toggleListDetails(foundTask.position, listName);
 
   //Reset the update task form and show the add task form
   resetUpdateTaskForm(updateTaskInput, addTaskForm, updateTaskForm);
