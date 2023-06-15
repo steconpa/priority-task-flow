@@ -121,9 +121,9 @@
         <table class="red-to-do-list-table" id="red-to-do-list-table">
           <thead>
             <tr>
+              <th>Priorizar</th>
               <th>Tarea</th>
               <th>Fecha limite</th>
-              <th>Priorizar</th>
               <th>Reclasificar</th>
             </tr>
           </thead>
@@ -140,9 +140,9 @@
         <table class="orange-to-do-list-table" id="orange-to-do-list-table">
           <thead>
             <tr>
+              <th>Priorizar</th>
               <th>Tarea</th>
               <th>Fecha limite</th>
-              <th>Priorizar</th>
               <th>Reclasificar</th>
             </tr>
           </thead>
@@ -159,9 +159,9 @@
         <table class="yellow-to-do-list-table" id="yellow-to-do-list-table">
           <thead>
             <tr>
+              <th>Priorizar</th>
               <th>Tarea</th>
               <th>Fecha limite</th>
-              <th>Priorizar</th>
               <th>Reclasificar</th>
             </tr>
           </thead>
@@ -178,9 +178,9 @@
         <table class="blue-to-do-list-table" id="blue-to-do-list-table">
           <thead>
             <tr>
+              <th>Priorizar</th>
               <th>Tarea</th>
               <th>Fecha limite</th>
-              <th>Priorizar</th>
               <th>Reclasificar</th>
             </tr>
           </thead>
@@ -189,6 +189,7 @@
         </table>
       </details>
     </section>
+
     <section id="focus-on-section" name="focus-on-section">
       <h2 class="h2-tittle-section">
         Enfoquese en seis
@@ -196,7 +197,7 @@
           <img src="../icons/icons8-download-32.png">
         </button>
       </h2>
-      <ul id="focusOn-sixList"></ul>
+      <ul id="focus-on-six-list"></ul>
     </section>
   </main>
 
@@ -244,15 +245,15 @@
 
   <template id="task-row-item">
     <tr class="task-element-item">
-      <td class="task-description" data-task-id="">Tarea 1</td>
-      <td class="task-due-date">
-        <input type="date" class="task-due-date-input" data-task-id="">
-      </td>
       <td class="task-position">
         <button class="move-up-task-position-button" data-task-id=""
          data-tooltip="Mover hacia arriba">
          <img src="icons/icons8-arriba-16.png">
         </button>
+      </td>
+      <td class="task-description" data-task-id="">Tarea 1</td>
+      <td class="task-due-date">
+        <input type="date" class="task-due-date-input" data-task-id="">
       </td>
       <td class="task-recategory-buttons">
         <button type="button" class="button-assign-task-red-list" 
@@ -279,15 +280,15 @@
     </tr>
   </template>
 
-  <template id="focusOn-elementsList">
-    <li class="taskElement-focusOn" id="">
-      <button class="return-task-button">
+  <template id="focus-on-template">
+    <li class="task-element-item">
+      <button class="return-task-button" data-task-id=""
+      data-tooltip="Regresar tarea">
         <img src="icons/icons8-go-back-icon-32.png">
       </button>
-      <span class="taskDescription-elementList">
-
-      </span>
-      <button class="start-task-button">
+      <span class="task-description" data-task-id=""></span>
+      <button class="start-task-button" data-task-id=""
+      data-tooltip="Iniciar tarea">
         <img src="icons/icons8-play-icon-32.png">
       </button>
     </li>

@@ -182,14 +182,14 @@ function classifyTask(event) {
   const task = findTaskById(taskId);
 
   const previousList = task.listName;
-  const previusPosition = task.position;
+  const previousPosition = task.position;
 
   task.listName = newListName;
   const taksInListName = getTasksByListName(task.listName);
   task.position = taksInListName.length;
 
   if (previousList !== "uncategorized-to-do-list") {
-    const tasksToDecrease = getTasksByPositionAndList(previusPosition, previousList);
+    const tasksToDecrease = getTasksByPositionAndList(previousPosition, previousList);
     decreasePositionByOne(tasksToDecrease);
     const taksInpreviousListName = getTasksByListName(previousList);
     toggleListDetails(taksInpreviousListName.length, previousList);
@@ -240,8 +240,10 @@ function editTaskDescription(event) {
   const tasksToDecrease = getTasksByPositionAndList(foundTask.position, foundTask.listName);
   const taksInListName = getTasksByListName(foundTask.listName);
   
-  // Toggle list details based on the list length
-  toggleListDetails(taksInListName.length-1, foundTask.listName);
+  if (foundTask.listName !== "uncategorized-to-do-list") {
+    // Toggle list details based on the list length
+    toggleListDetails(taksInListName.length-1, foundTask.listName);
+  }
   
   // Establecer la posición de la tarea encontrada en 0
   foundTask.position = 0;
@@ -388,6 +390,7 @@ function addNewTaskToDoList(event) {
 
   // Reset the value of the new-task-input
   document.getElementById("new-task-input").value = "";
+  document.getElementById("new-task-input").focus();
 }
 
 /**
@@ -468,13 +471,14 @@ function updateTaskElement(event) {
     newTaskItem = createNewTaskListItem(foundTask);
   } else {
     newTaskItem = createNewTaskRowItem(foundTask)
+    
+    // Toggle list details based on the list length
+    toggleListDetails(foundTask.position, listName);
   }
 
   // Add the new task list item to the corresponding task list
   addTaskToList(newTaskItem, listName);
-  // Toggle list details based on the list length
-  toggleListDetails(foundTask.position, listName);
-
+  
   //Reset the update task form and show the add task form
   resetUpdateTaskForm(updateTaskInput, addTaskForm, updateTaskForm);
 }
@@ -485,45 +489,44 @@ function loadItems() {
     "orange-to-do-list",
     "yellow-to-do-list",
   ];
-  const focusOnSixList = document.getElementById("focusOn-sixList");
 
-  const template = document.getElementById("focusOn-elementsList");
+  const focusOnSixList = document.getElementById("focus-on-six-list");
+  const template = document.getElementById("focus-on-template");
 
-  let loadedItems = 0;
+  let onFocusTask = toDoListTasks.filter((task) => task.onFocus);
+
+  if (onFocusTask.length >= 6) {
+    return;
+  }
 
   for (const listName of listNames) {
-    const tasks = toDoListTasks.filter((task) => task.listName === listName);
-    const sortedTasks = tasks.sort((a, b) => a.position - b.position);
+    let sortedTasks = getTasksByListName(listName);
 
-    for (const task of sortedTasks) {
-      const listItem = document.getElementById(task.id);
+    if (sortedTasks.length > 0) {
+      for (const task of sortedTasks) {
+        task.onFocus = true;
+        createOnFocusTask(task, template, focusOnSixList);
 
-      if (listItem) {
-        const clonedTemplate =
-          template.content.cloneNode(true).firstElementChild;
-        const descriptionElement = clonedTemplate.querySelector(
-          ".taskDescription-elementList"
-        );
-        const returnButton = clonedTemplate.querySelector(
-          ".return-task-button"
-        );
-        const startButton = clonedTemplate.querySelector(".start-task-button");
-
-        descriptionElement.textContent = task.description;
-        clonedTemplate.id = task.id;
-        returnButton.addEventListener("click", handleReturnTask);
-        startButton.addEventListener("click", handleStartTask);
-
-        focusOnSixList.appendChild(clonedTemplate);
-        listItem.parentNode.removeChild(listItem);
-        loadedItems++;
-
-        if (loadedItems >= 6) {
+        if (toDoListTasks.filter((task) => task.onFocus).length >= 6) {
           return;
         }
       }
     }
   }
+}
+
+function createOnFocusTask(task, template, focusOnSixList) {
+  const clonedTemplate = template.content.cloneNode(true).firstElementChild;
+  const descriptionElement = clonedTemplate.querySelector(".task-description");
+  const returnButton = clonedTemplate.querySelector(".return-task-button");
+  const startButton = clonedTemplate.querySelector(".start-task-button");
+
+  descriptionElement.textContent = task.description;
+  descriptionElement.dataset.taskId = task.id;
+  returnButton.addEventListener("click", handleReturnTask);
+  startButton.addEventListener("click", handleStartTask);
+
+  focusOnSixList.appendChild(clonedTemplate);
 }
 
 function handleReturnTask() {
