@@ -84,13 +84,25 @@ currentDateDiv.textContent = formattedDate;
 const addItemButton = document.querySelector(".add-new-task-button");
 const updateTaskButton = document.querySelector(".update-task-button");
 const deleteTaskButton = document.querySelector(".delete-task-button");
-const taskLoaderButton = document.getElementById("taskloader");
+const taskLoaderButton = document.getElementById("take-on-six-tasks-button");
 
 // Event listeners
 addItemButton.addEventListener("click", addNewTaskToDoList);
 updateTaskButton.addEventListener("click",updateTaskElement);
 deleteTaskButton.addEventListener("click",deleteTaskElement);
 taskLoaderButton.addEventListener("click", loadItems);
+
+const tabButtons = document.querySelectorAll(".tab-button");
+const sections = document.querySelectorAll("main section");
+
+tabButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const target = button.dataset.target;
+    sections.forEach((section) => {
+      section.style.display = section.id === target ? "block" : "none";
+    });
+  });
+});
 
 function addTaskToList(taskListItem, listName) {
   document.getElementById(listName).appendChild(taskListItem);
@@ -516,15 +528,11 @@ function loadItems() {
 }
 
 function createOnFocusTask(task, template, focusOnSixList) {
-  const clonedTemplate = template.content.cloneNode(true).firstElementChild;
-  const descriptionElement = clonedTemplate.querySelector(".task-description");
-  const returnButton = clonedTemplate.querySelector(".return-task-button");
-  const startButton = clonedTemplate.querySelector(".start-task-button");
+  const clonedTemplate = template.content.cloneNode(true);
+  const taskElementItem = clonedTemplate.querySelector(".task-element-item");
 
-  descriptionElement.textContent = task.description;
-  descriptionElement.dataset.taskId = task.id;
-  returnButton.addEventListener("click", handleReturnTask);
-  startButton.addEventListener("click", handleStartTask);
+  taskElementItem.textContent = task.description;
+  taskElementItem.dataset.taskId = task.id;
 
   focusOnSixList.appendChild(clonedTemplate);
 }

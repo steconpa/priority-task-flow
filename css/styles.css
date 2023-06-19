@@ -1,3 +1,12 @@
+:root {
+  --color-red: #C80000;
+  --color-orange: #A75B31;
+  --color-yellow: #737300;
+  --color-blueviolet: #6B6A9C;
+  --color-blueprincipal: #43469A;
+  --color-bluesecundary: #E4F0F8;
+}
+
 html {
   font-size: 16px;
 }
@@ -9,15 +18,15 @@ html {
 body {
   display: grid;
   column-gap: 10px;
-  grid-template-columns: repeat(4, 1fr);
+  row-gap: 5px;
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: auto auto 1fr auto;
   grid-template-areas: 
-    "header header header header"
-    "task-in-progress task-in-progress task-in-progress task-in-progress"
-    "sidebar main main main"
-    "footer footer footer footer";
+    "header header header header header"
+    "task-in-progress task-in-progress task-in-progress task-in-progress task-in-progress"
+    "sidebar main main main main"
+    "footer footer footer footer footer";
   font-family: 'Noto Sans', sans-serif;
-
 }
 
 ul {
@@ -31,7 +40,7 @@ ul {
   justify-content: center;
   align-items: center;
   color: white;
-  background-color: #43469a;
+  background-color: var(--color-blueprincipal);
   height: 25vh;
   border-bottom-left-radius: 50% 10%;
   border-bottom-right-radius: 50% 10%;
@@ -98,13 +107,17 @@ a {
 
 .h2-tittle-section {
   font-size: large;
+  color: var(--color-blueprincipal);
+  margin: 0;
+  padding: 10px 5px;
+  margin-bottom: 0.5em;
 }
 
 .decoration-text {
-    font-family: 'Alex Brush', cursive;
-    font-size:larger;
-    letter-spacing: 1.5px ;
-    font-size: larger;
+  font-family: 'Alex Brush', cursive;
+  font-size:larger;
+  letter-spacing: 1.5px ;
+  font-size: larger;
 }
 
 #task-in-progress {
@@ -143,7 +156,14 @@ textarea#update-task-input {
   padding: 5px;
   resize: none;
   border-radius: 5px;
+  border-color: var(--color-blueprincipal);
 }
+
+textarea#new-task-input:focus,
+textarea#update-task-input:focus {
+  border: 2px solid var(--color-blueprincipal);
+}
+
 form#add-task-form > div,
 form#update-task-form > div {
   display: flex;
@@ -154,14 +174,29 @@ form#add-task-form button,
 form#update-task-form button {
   font-size: small;
   margin: 5px ;
+  background-color: var(--color-blueprincipal);
+  color: var(--color-bluesecundary);
+  border: none;
+  cursor: pointer;
+  padding: 7px 11px;
+  border-radius: 11px;
+}
+
+form#add-task-form button:hover,
+form#update-task-form button:hover {
+  background-color: var(--color-bluesecundary);
+  color: var(--color-blueprincipal);
+  font-weight: bold;
+}
+
+form#add-task-form button:active,
+form#update-task-form button:active {
+  background-color: var(--color-blueprincipal);
+  color: var(--color-bluesecundary);
 }
 
 /*Botones redondos*/
-.category-buttons > button,
-td.task-recategory-buttons > button,
-td.task-position > button,
-.return-task-button,
-.start-task-button {
+td.task-position > button {
   position: relative;
   border-radius: 50%;
   width: 16px;
@@ -173,11 +208,70 @@ td.task-position > button,
   overflow: visible;
 }
 
-.category-buttons > button::before,
-td.task-recategory-buttons > button::before,
-td.task-position > button::before,
-.return-task-button::before,
-.start-task-button::before {
+.circle-button-16 {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+
+.circle-button-32 {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  padding: 0px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.circle-button-16::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.button-assign-task-red-list {
+  border: 1px solid var(--color-red);
+}
+
+.button-assign-task-red-list::before {
+  background-color: var(--color-red);
+}
+
+.button-assign-task-orange-list {
+  border: 1px solid var(--color-orange);
+}
+
+.button-assign-task-orange-list::before {
+  background-color: var(--color-orange);
+}
+
+.button-assign-task-yellow-list {
+  border: 1px solid var(--color-yellow);
+}
+
+.button-assign-task-yellow-list::before {
+  background-color: var(--color-yellow);
+}
+
+.button-assign-task-blue-list {
+  border: 1px solid var(--color-blueviolet);
+}
+
+.button-assign-task-blue-list::before {
+  background-color: var(--color-blueviolet);
+}
+
+td.task-position > button::before {
   content: attr(data-tooltip);
   font-size: xx-small;
   position: absolute;
@@ -195,11 +289,7 @@ td.task-position > button::before,
   z-index: 9999;
 }
 
-.category-buttons > button:hover::before,
-td.task-recategory-buttons > button:hover::before,
-td.task-position > button:hover::before,
-.return-task-button:hover::before,
-.start-task-button:hover::before {
+.circle-button:hover::before {
   opacity: 1;
   visibility: visible;
 }
@@ -218,10 +308,6 @@ li.task-element-item {
   border-bottom: silver solid 1px;
 }
 
-li.task-element-item > .category-buttons {
-  flex-basis: 32px;
-}
-
 span.task-description {
   flex-grow: 1;
   font-size:small;
@@ -234,12 +320,44 @@ span.task-description {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-content: center;
+  gap: 2px;
 }
 
 /*Sección de categorias */
 main {
   grid-area: main;
   min-height: 75dvh;
+}
+
+.tab-menu {
+  background-color: #F0F0F0;
+}
+
+.tab-button {
+  border: none;
+  background-color: transparent;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-right: 1px solid silver;
+}
+
+.tab-button:hover {
+  background-color: #E0E0E0;
+}
+
+.tab-button.active {
+  background-color: white;
+  border-bottom: 2px solid var(--color-blueprincipal);
+}
+
+.tab-button h2 {
+  margin: 0;
+}
+
+.tab-button:focus {
+  outline: none;
 }
 
 details summary {
@@ -266,22 +384,22 @@ details summary::before {
 }
 
 details summary.red-to-do-list-summary::before {
-  background-color: #E80000;
+  background-color: var(--color-red);
   color:white;
 }
 
 details summary.orange-to-do-list-summary::before {
-  background-color: #B1560A;
+  background-color: var(--color-orange);
   color:white;
 }
 
 details summary.yellow-to-do-list-summary::before {
-  background-color: #FAB005;
+  background-color: var(--color-yellow);
   color:white;
 }
 
 details summary.blue-to-do-list-summary::before {
-  background-color: #1A72BE;
+  background-color: var(--color-blueviolet);
   color:white;
 }
 
@@ -339,8 +457,7 @@ input.task-due-date-input{
 
 /*Seccion de enfoque*/
 #focus-on-section {
-  display: flex;
-  flex-direction: column;
+  display: none;
 }
 
 .taskloader {

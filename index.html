@@ -110,8 +110,13 @@
   </sidebar>
 
   <main>
+    <nav class="tab-menu">
+      <button class="tab-button" data-target="priority-sort-section"><h2 class="h2-tittle-section">Priorice</h2></button>
+      <button class="tab-button" data-target="focus-on-section"><h2 class="h2-tittle-section">
+        Enfoquese</h2></button>
+    </nav>
+
     <section id="priority-sort-section" class="priority-sort-section">
-      <h2 class="h2-tittle-section">Priorice</h2>
 
       <details id="red-to-do-list-details">
         <summary class="red-to-do-list-summary" aria-expanded="false" aria-controls="red-to-do-list">
@@ -191,12 +196,17 @@
     </section>
 
     <section id="focus-on-section" name="focus-on-section">
-      <h2 class="h2-tittle-section">
-        Enfoquese en seis
-        <button class="taskloader" id="taskloader">
-          <img src="../icons/icons8-download-32.png">
+      <nav>
+        <button class="circle-button-32 take-on-six-tasks-button" id="take-on-six-tasks-button">
+          <img src="icons/icons8-download-32.png">
         </button>
-      </h2>
+        <button class="circle-button-32 return-six-tasks-button" id="return-six-tasks-button">
+          <img src="icons/icons8-go-back-icon-32.png">
+        </button>
+        <button class="circle-button-32 start-tasks-button" id="start-tasks-button">
+          <img src="icons/icons8-play-icon-32.png">
+        </button>
+      </nav>
       <ul id="focus-on-six-list"></ul>
     </section>
   </main>
@@ -219,25 +229,21 @@
     <li class="task-element-item">
       <span class="task-description" data-task-id=""></span>
       <div class="category-buttons">
-        <button type="button" class="button-assign-task-red-list" 
+        <button type="button" class="circle-button-16 button-assign-task-red-list" 
           data-tooltip="Importante y urgente" value="red-to-do-list" 
           data-task-id="">
-          <img src="icons/icons8-red-circle-16.png">
         </button>
-        <button type="button" class="button-assign-task-orange-list" 
+        <button type="button" class="circle-button-16 button-assign-task-orange-list" 
           value="orange-to-do-list" data-tooltip="Importante pero no urgente"
           data-task-id="">
-          <img src="icons/icons8-orange-circle-16.png">
         </button>
-        <button type="button" class="button-assign-task-yellow-list" 
+        <button type="button" class="circle-button-16 button-assign-task-yellow-list" 
           value="yellow-to-do-list" data-tooltip="No es importante pero si urgente"
           data-task-id="">
-          <img src="icons/icons8-yellow-circle-16.png">
         </button>
-        <button type="button" class="button-assign-blue-list"
+        <button type="button" class="circle-button-16 button-assign-task-blue-list"
           value="blue-to-do-list" data-tooltip="No es importante ni urgente"
           data-task-id="">
-          <img src="icons/icons8-blue-circle-16.png">
         </button>
       </div>
     </li>
@@ -256,41 +262,28 @@
         <input type="date" class="task-due-date-input" data-task-id="">
       </td>
       <td class="task-recategory-buttons">
-        <button type="button" class="button-assign-task-red-list" 
+        <button type="button" class="circle-button-16 button-assign-task-red-list" 
           data-tooltip="Importante y urgente" value="red-to-do-list" 
           data-task-id="">
-          <img src="icons/icons8-red-circle-16.png">
         </button>
-        <button type="button" class="button-assign-task-orange-list" 
+        <button type="button" class="circle-button-16 button-assign-task-orange-list" 
           value="orange-to-do-list" data-tooltip="Importante pero no urgente"
           data-task-id="">
-          <img src="icons/icons8-orange-circle-16.png">
         </button>
-        <button type="button" class="button-assign-task-yellow-list" 
+        <button type="button" class="circle-button-16 button-assign-task-yellow-list" 
           value="yellow-to-do-list" data-tooltip="No es importante pero si urgente"
           data-task-id="">
-          <img src="icons/icons8-yellow-circle-16.png">
         </button>
-        <button type="button" class="button-assign-blue-list"
+        <button type="button" class="circle-button-16 button-assign-task-blue-list"
           value="blue-to-do-list" data-tooltip="No es importante ni urgente"
           data-task-id="">
-          <img src="icons/icons8-blue-circle-16.png">
         </button>
       </td>
     </tr>
   </template>
 
   <template id="focus-on-template">
-    <li class="task-element-item">
-      <button class="return-task-button" data-task-id=""
-      data-tooltip="Regresar tarea">
-        <img src="icons/icons8-go-back-icon-32.png">
-      </button>
-      <span class="task-description" data-task-id=""></span>
-      <button class="start-task-button" data-task-id=""
-      data-tooltip="Iniciar tarea">
-        <img src="icons/icons8-play-icon-32.png">
-      </button>
+    <li class="task-element-item" data-task-id="">
     </li>
   </template>
 
