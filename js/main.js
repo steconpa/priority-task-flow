@@ -547,8 +547,6 @@ function takeOnSixTasks() {
 
         onFocusTask = filterTasksByOnFocus()
         task.position = onFocusTask.length;
-        console.log(onFocusTask.length);
-        console.log(task.position);
 
         if (onFocusTask.length >= 6) {
           return;
