@@ -84,20 +84,23 @@ currentDateDiv.textContent = formattedDate;
 const addItemButton = document.querySelector(".add-new-task-button");
 const updateTaskButton = document.querySelector(".update-task-button");
 const deleteTaskButton = document.querySelector(".delete-task-button");
-const taskLoaderButton = document.getElementById("take-on-six-tasks-button");
+const takeOnSixTasksButton = document.getElementById("take-on-six-tasks-button");
 
 // Event listeners
 addItemButton.addEventListener("click", addNewTaskToDoList);
-updateTaskButton.addEventListener("click",updateTaskElement);
-deleteTaskButton.addEventListener("click",deleteTaskElement);
-taskLoaderButton.addEventListener("click", loadItems);
+updateTaskButton.addEventListener("click", updateTaskElement);
+deleteTaskButton.addEventListener("click", deleteTaskElement);
+takeOnSixTasksButton.addEventListener("click", takeOnSixTasks);
 
-const tabButtons = document.querySelectorAll(".tab-button");
+const tabElement = document.querySelectorAll(".tab-element");
 const sections = document.querySelectorAll("main section");
 
-tabButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const target = button.dataset.target;
+tabElement.forEach((element) => {
+  element.addEventListener("click", () => {
+    const target = element.dataset.target;
+    tabElement.forEach((li) => li.classList.remove("active"));
+    element.classList.add("active");
+
     sections.forEach((section) => {
       section.style.display = section.id === target ? "block" : "none";
     });
@@ -118,11 +121,25 @@ function findTaskByIdAndListName(id, listName) {
   );
 }
 
+function filterTasksByOnFocus() {
+  return toDoListTasks.filter((task) => task.onFocus);
+}
+
 function decreasePositionByOne(tasks) {
   tasks.forEach((task) => {
     task.position -= 1;
   });
 }
+
+function removeTaskFromList(listName, taskId) {
+  const tbody = document.getElementById(listName);
+  const tr = tbody.querySelector(`tr[data-task-id="${taskId}"]`);
+  
+  if (tr) {
+    tr.remove();
+  }
+}
+
 
 function getTasksByListName(listName) {
   const filteredTasks = toDoListTasks.filter((task) => {
@@ -345,6 +362,8 @@ function createNewTaskRowItem(taskObject) {
   const template = document.getElementById("task-row-item");
   const clonedRow = template.content.cloneNode(true).firstElementChild;
 
+  clonedRow.dataset.taskId = taskObject.id;
+
   const clonedDescription = clonedRow.querySelector(".task-description");
   clonedDescription.dataset.taskId = taskObject.id;
   clonedDescription.textContent = taskObject.description;
@@ -495,7 +514,7 @@ function updateTaskElement(event) {
   resetUpdateTaskForm(updateTaskInput, addTaskForm, updateTaskForm);
 }
 
-function loadItems() {
+function takeOnSixTasks() {
   const listNames = [
     "red-to-do-list",
     "orange-to-do-list",
@@ -505,7 +524,7 @@ function loadItems() {
   const focusOnSixList = document.getElementById("focus-on-six-list");
   const template = document.getElementById("focus-on-template");
 
-  let onFocusTask = toDoListTasks.filter((task) => task.onFocus);
+  let onFocusTask = filterTasksByOnFocus();
 
   if (onFocusTask.length >= 6) {
     return;
@@ -518,8 +537,20 @@ function loadItems() {
       for (const task of sortedTasks) {
         task.onFocus = true;
         createOnFocusTask(task, template, focusOnSixList);
+        removeTaskFromList(listName, task.id);
 
-        if (toDoListTasks.filter((task) => task.onFocus).length >= 6) {
+        const tasksToDecrease = getTasksByPositionAndList(task.position, listName);
+        decreasePositionByOne(tasksToDecrease);
+
+        const taksListName = getTasksByListName(listName);
+        toggleListDetails(taksListName.length, listName);
+
+        onFocusTask = filterTasksByOnFocus()
+        task.position = onFocusTask.length;
+        console.log(onFocusTask.length);
+        console.log(task.position);
+
+        if (onFocusTask.length >= 6) {
           return;
         }
       }

@@ -110,10 +110,15 @@
   </sidebar>
 
   <main>
-    <nav class="tab-menu">
-      <button class="tab-button" data-target="priority-sort-section"><h2 class="h2-tittle-section">Priorice</h2></button>
-      <button class="tab-button" data-target="focus-on-section"><h2 class="h2-tittle-section">
-        Enfoquese</h2></button>
+    <nav>
+      <ul class="tab-menu">
+        <li class="tab-element active" data-target="priority-sort-section">
+          Priorice
+        </li>
+        <li class="tab-element" data-target="focus-on-section">
+          Enfoquese
+        </li>
+      </ul>
     </nav>
 
     <section id="priority-sort-section" class="priority-sort-section">
@@ -197,15 +202,20 @@
 
     <section id="focus-on-section" name="focus-on-section">
       <nav>
-        <button class="circle-button-32 take-on-six-tasks-button" id="take-on-six-tasks-button">
-          <img src="icons/icons8-download-32.png">
-        </button>
-        <button class="circle-button-32 return-six-tasks-button" id="return-six-tasks-button">
-          <img src="icons/icons8-go-back-icon-32.png">
-        </button>
-        <button class="circle-button-32 start-tasks-button" id="start-tasks-button">
-          <img src="icons/icons8-play-icon-32.png">
-        </button>
+        <ul class="focus-on-menu">
+          <li class="focus-on-element" id="take-on-six-tasks-button">
+            <img src="icons/icons8-download-32.png">
+            <p>Cargar 6 tareas</p>
+          </li>
+          <li class="focus-on-element" id="return-six-tasks-button">
+            <img src="icons/icons8-go-back-icon-32.png">
+            <p>Devolver tareas</p>
+          </li>
+          <li class="focus-on-element" id="start-tasks-button">
+            <img src="icons/icons8-play-icon-32.png">
+            <p>Iniciar tareas</p>
+          </li>
+        </ul>
       </nav>
       <ul id="focus-on-six-list"></ul>
     </section>
@@ -250,7 +260,7 @@
   </template>
 
   <template id="task-row-item">
-    <tr class="task-element-item">
+    <tr class="task-element-item" data-task-id="">
       <td class="task-position">
         <button class="move-up-task-position-button" data-task-id=""
          data-tooltip="Mover hacia arriba">
