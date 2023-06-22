@@ -71,9 +71,25 @@
   </header>
 
   <section id="task-in-progress">
-    <div id="current-date"></div>
-    <textarea type="text" class="taskDescription-inProgress" id="" readonly>
-      </textarea>
+    <p class="current-date" id="current-date"></p>
+    <article class="pomodoro-segment">
+      <p class="pomodoro-stopwatch" id="pomodoro-stopwatch"></p>
+      <p class="ongoing-task" data-task-id="" id="ongoing-task"></p>
+      <div class="control-buttons" id="control-buttons">
+        <button>
+          Iniciar
+        </button>
+        <button>
+          Pausar
+        </button>
+        <button>
+          Detener
+        </button>
+        <button>
+          Finalizar
+        </button>
+      </div>
+    </article>
   </section>
 
   <sidebar>
@@ -116,7 +132,7 @@
           Priorice
         </li>
         <li class="tab-element" data-target="focus-on-section">
-          Enfoquese
+          Enfoquese en 6
         </li>
       </ul>
     </nav>
@@ -205,7 +221,7 @@
         <ul class="focus-on-menu">
           <li class="focus-on-element" id="take-on-six-tasks-button">
             <img src="icons/icons8-download-32.png">
-            <p>Cargar 6 tareas</p>
+            <p>Traer tareas</p>
           </li>
           <li class="focus-on-element" id="return-six-tasks-button">
             <img src="icons/icons8-go-back-icon-32.png">

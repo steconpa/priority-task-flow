@@ -8,7 +8,9 @@ class Task {
     this._listName = listName;
     this._position = 0;
     this._dueDate = null;
-    this._onFocus = false;
+    this._onFocusList = false;
+    this._inProgress = false;
+    this._countPomodoro = 0;
   }
 
   get id() {
@@ -51,12 +53,28 @@ class Task {
     this._dueDate = newDate;
   }
 
-  get onFocus() {
-    return this._onFocus;
+  get onFocusList() {
+    return this._onFocusList;
   }
 
-  set onFocus(booleanFocus) {
-    this._onFocus = booleanFocus;
+  set onFocusList(booleanFocus) {
+    this._onFocusList = booleanFocus;
+  }
+
+  get inProgress() {
+    return this._inProgress;
+  }
+
+  set inProgress(booleanProgress) {
+    this._inProgress = booleanProgress;
+  }
+
+  get countPomodoro() {
+    return this._countPomodoro;
+  }
+
+  set countPomodoro(newCountPomodoro) {
+    this._countPomodoro = newCountPomodoro;
   }
 }
 
@@ -115,20 +133,8 @@ function findTaskById(taskId) {
   return toDoListTasks.find((task) => task.id === taskId);
 }
 
-function findTaskByIdAndListName(id, listName) {
-  return toDoListTasks.find(
-    (task) => task.id === id && task.listName === listName
-  );
-}
-
-function filterTasksByOnFocus() {
-  return toDoListTasks.filter((task) => task.onFocus);
-}
-
-function decreasePositionByOne(tasks) {
-  tasks.forEach((task) => {
-    task.position -= 1;
-  });
+function getTaskOnFocusList() {
+  return toDoListTasks.filter((task) => task.onFocusList);
 }
 
 function removeTaskFromList(listName, taskId) {
@@ -138,27 +144,19 @@ function removeTaskFromList(listName, taskId) {
   if (tr) {
     tr.remove();
   }
-}
 
+}
 
 function getTasksByListName(listName) {
   const filteredTasks = toDoListTasks.filter((task) => {
-    return task.listName === listName && !task.onFocus;
+    return task.listName === listName && !task.onFocusList;
   });
-
+  
   const sortedTasks = filteredTasks.sort((taskA, taskB) => {
     return taskA.position - taskB.position;
   });
-
+  
   return sortedTasks;
-}
-
-function getTasksByPositionAndList(position, listName) {
-  return toDoListTasks.filter((task) => task.listName === listName && task.position > position);
-}
-
-function deleteTaskById(taskId) {
-  toDoListTasks = toDoListTasks.filter((task) => task.id !== taskId);
 }
 
 function toggleListDetails(lengthCurrentList, listName) {
@@ -172,6 +170,20 @@ function toggleListDetails(lengthCurrentList, listName) {
   if (!listDetails.open) {
     spanSummaryElement.textContent = "";
   }
+}
+
+function getTasksByPositionAndList(position, listName) {
+  return toDoListTasks.filter((task) => task.listName === listName && task.position > position && !task.onFocusList);
+}
+
+function decreasePositionByOne(tasks) {
+  tasks.forEach((task) => {
+    task.position -= 1;
+  });
+}
+
+function deleteTaskById(taskId) {
+  toDoListTasks = toDoListTasks.filter((task) => task.id !== taskId);
 }
 
 function formatDate(date) {
@@ -506,54 +518,12 @@ function updateTaskElement(event) {
     // Toggle list details based on the list length
     toggleListDetails(foundTask.position, listName);
   }
-
+  
   // Add the new task list item to the corresponding task list
   addTaskToList(newTaskItem, listName);
   
   //Reset the update task form and show the add task form
   resetUpdateTaskForm(updateTaskInput, addTaskForm, updateTaskForm);
-}
-
-function takeOnSixTasks() {
-  const listNames = [
-    "red-to-do-list",
-    "orange-to-do-list",
-    "yellow-to-do-list",
-  ];
-
-  const focusOnSixList = document.getElementById("focus-on-six-list");
-  const template = document.getElementById("focus-on-template");
-
-  let onFocusTask = filterTasksByOnFocus();
-
-  if (onFocusTask.length >= 6) {
-    return;
-  }
-
-  for (const listName of listNames) {
-    let sortedTasks = getTasksByListName(listName);
-
-    if (sortedTasks.length > 0) {
-      for (const task of sortedTasks) {
-        task.onFocus = true;
-        createOnFocusTask(task, template, focusOnSixList);
-        removeTaskFromList(listName, task.id);
-
-        const tasksToDecrease = getTasksByPositionAndList(task.position, listName);
-        decreasePositionByOne(tasksToDecrease);
-
-        const taksListName = getTasksByListName(listName);
-        toggleListDetails(taksListName.length, listName);
-
-        onFocusTask = filterTasksByOnFocus()
-        task.position = onFocusTask.length;
-
-        if (onFocusTask.length >= 6) {
-          return;
-        }
-      }
-    }
-  }
 }
 
 function createOnFocusTask(task, template, focusOnSixList) {
@@ -566,6 +536,52 @@ function createOnFocusTask(task, template, focusOnSixList) {
   focusOnSixList.appendChild(clonedTemplate);
 }
 
+function takeOnSixTasks() {
+  const listNames = [
+    "red-to-do-list",
+    "orange-to-do-list",
+    "yellow-to-do-list",
+  ];
+
+  const focusOnSixList = document.getElementById("focus-on-six-list");
+  const template = document.getElementById("focus-on-template");
+
+  let onFocusTask = focusOnSixList.childElementCount;
+
+  if (onFocusTask >= 6) {
+    return;
+  }
+
+  for (const listName of listNames) {
+    const sortedTasks = getTasksByListName(listName);
+
+    if (sortedTasks.length > 0) {
+
+      for (const task of sortedTasks) {
+        
+        createOnFocusTask(task, template, focusOnSixList);
+        removeTaskFromList(listName, task.id);
+        onFocusTask = focusOnSixList.childElementCount;
+        
+        const previousPosition = task.position;
+        task.onFocusList = true;
+        task.position = onFocusTask;
+
+        const tasksToDecrease = getTasksByPositionAndList(previousPosition, listName);
+        decreasePositionByOne(tasksToDecrease);
+
+        const taksListName = getTasksByListName(listName);
+        toggleListDetails(taksListName.length, listName);
+
+        if (onFocusTask >= 6) {
+          break;
+        }
+      }
+    }
+  }
+
+}
+
 function handleReturnTask() {
   console.log("retorno");
 }
@@ -573,3 +589,4 @@ function handleReturnTask() {
 function handleStartTask() {
   console.log("Empieza");
 }
+

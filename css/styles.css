@@ -120,14 +120,18 @@ a {
   font-size: larger;
 }
 
-#task-in-progress {
+/*tarea en progreso*/
+section#task-in-progress {
   grid-area: task-in-progress;
   padding: 0.5em 0em;
+}
+
+p.current-date {
   font-size: xx-large;
   text-align: center;
 }
 
-.taskDescription-inProgress {
+.pomodoro-segment {
   display: none; /* Oculta inicialmente el textarea */
 }
 
