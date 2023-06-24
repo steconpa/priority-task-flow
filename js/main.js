@@ -10,7 +10,7 @@ class Task {
     this._dueDate = null;
     this._onFocusList = false;
     this._inProgress = false;
-    this._countPomodoro = 0;
+    this._pomodoro = null;
   }
 
   get id() {
@@ -69,12 +69,49 @@ class Task {
     this._inProgress = booleanProgress;
   }
 
-  get countPomodoro() {
-    return this._countPomodoro;
+  get pomodoro() {
+    return this._pomodoro;
   }
 
-  set countPomodoro(newCountPomodoro) {
-    this._countPomodoro = newCountPomodoro;
+  set pomodoro(newPomodoro) {
+    this._pomodoro = newPomodoro;
+  }
+}
+
+class DueDate {
+  constructor(date) {
+    this._date = new Date(date);
+    this.adjustTimezoneOffset();
+  }
+
+  get date() {
+    return this._date;
+  }
+
+  set date(newDate) {
+    this._date = new Date(newDate);
+  }
+
+  isPastDue() {
+    const currentDate = new Date();
+    return this._date < currentDate;
+  }
+
+  toString() {
+    const options = { weekday: "long", year: 'numeric', month: 'long', day: 'numeric' };
+    return this._date.toLocaleDateString(undefined, options);
+  }
+
+  adjustTimezoneOffset() {
+    const timezoneOffset = this._date.getTimezoneOffset();
+    this._date.setMinutes(this._date.getMinutes() - timezoneOffset);
+  }
+
+  formatDate() {
+    const year = this._date.getFullYear();
+    const month = String(this._date.getMonth() + 1).padStart(2, "0");
+    const day = String(this._date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 }
 
@@ -90,6 +127,7 @@ const options = {
   month: "long",
   day: "numeric",
 };
+
 const formattedDate = currentDate.toLocaleDateString(undefined, options);
 
 // Obtener el elemento div por su ID
@@ -186,16 +224,6 @@ function deleteTaskById(taskId) {
   toDoListTasks = toDoListTasks.filter((task) => task.id !== taskId);
 }
 
-function formatDate(date) {
-  if (date instanceof Date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
-  return "";
-}
-
 /*
  * Validates the input value for a task.
  * @param {string} inputValue - The input value to validate.
@@ -232,6 +260,7 @@ function classifyTask(event) {
   if (previousList !== "uncategorized-to-do-list") {
     const tasksToDecrease = getTasksByPositionAndList(previousPosition, previousList);
     decreasePositionByOne(tasksToDecrease);
+
     const taksInpreviousListName = getTasksByListName(previousList);
     toggleListDetails(taksInpreviousListName.length, previousList);
   }
@@ -291,7 +320,6 @@ function editTaskDescription(event) {
 
   // Disminuir la posición en 1 de las tareas obtenidas
   decreasePositionByOne(tasksToDecrease);
-
 }
 
 function upListItem(event) {
@@ -327,16 +355,7 @@ function updateTaskDueDate(event) {
 
   if (task) {
     const inputDate = event.currentTarget.value;
-    const [year, month, day] = inputDate.split("-");
-    
-    // Obtener la diferencia de zona horaria en minutos
-    const timezoneOffset = new Date().getTimezoneOffset();
-    
-    // Crear una instancia de Date en la zona horaria local ajustando la fecha
-    const newDueDate = new Date(year, month - 1, day);
-    newDueDate.setMinutes(newDueDate.getMinutes() + timezoneOffset);
-    
-    // Actualizar la fecha de vencimiento de la tarea
+    const newDueDate = new DueDate(inputDate);
     task.dueDate = newDueDate;
   }
 }
@@ -382,7 +401,7 @@ function createNewTaskRowItem(taskObject) {
   clonedDescription.addEventListener("dblclick", editTaskDescription);
 
   const clonedDueDateInput = clonedRow.querySelector(".task-due-date-input");
-  clonedDueDateInput.value = formatDate(taskObject.dueDate) || "";
+  clonedDueDateInput.value = taskObject.dueDate?.formatDate() || "";
   clonedDueDateInput.dataset.taskId = taskObject.id;
   clonedDueDateInput.addEventListener("change", updateTaskDueDate);
 
