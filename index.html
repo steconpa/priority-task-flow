@@ -73,22 +73,69 @@
   <section id="task-in-progress">
     <p class="current-date" id="current-date"></p>
     <article class="pomodoro-segment">
-      <p class="pomodoro-stopwatch" id="pomodoro-stopwatch"></p>
-      <p class="ongoing-task" data-task-id="" id="ongoing-task"></p>
-      <div class="control-buttons" id="control-buttons">
-        <button>
-          Iniciar
+      <h2 class="description-task-in-progress" data-task-id="" 
+        id="description-task-in-progress">
+        Tarea de ejemplo
+      </h2>
+      <div class="pomodoro-stopwatch-display-container" id="pomodoro-stopwatch-display-container">
+        <div class="pomodoro-stopwatch-display" id="pomodoro-stopwatch-display">
+          <label for="pomodoro-stopwatch-display-label">Tiempo restante</label>
+          <input type="text" class="pomodoro-stopwatch-display-input" id="pomodoro-stopwatch-display-input"
+          value="25:00" disabled></input>
+        </div>
+      </div>
+      <div class="pomodoro-stopwatch-buttons" id="pomodoro-stopwatch-buttons">
+        <button class="pomodoro-stopwatch-button" id="pomodoro-stopwatch-play-button">
+          <img src="icons/icons8-play-icon-32.png" alt="Iniciar" />
         </button>
-        <button>
-          Pausar
+        <button class="pomodoro-stopwatch-button" id="pomodoro-stopwatch-pause-button">
+          <img src="icons/icons8-pause-icon-32.png" alt="Pausar" />
         </button>
-        <button>
-          Detener
+        <button class="pomodoro-stopwatch-button" id="pomodoro-stopwatch-stop-button">
+          <img src="icons/icons8-stop-icon-32.png" alt="Detener" />
         </button>
-        <button>
-          Finalizar
+        <button class="pomodoro-stopwatch-button" id="pomodoro-stopwatch-checked-button">
+          <img src="icons/icons8-checked-icon-32.png" alt="Detener" />
         </button>
       </div>
+      <div class="pomodoro-stopwatch-settings" id="pomodoro-stopwatch-settings">
+        <fieldset class="pomodoro-stopwatch-settings-tittle">
+          <legend>Configuración:</legend>
+          <div class="pomodoro-stopwatch-minutes" id="pomodoro-stopwatch-minutes">
+          <label for="pomodoro-stopwatch-minutes">Pomodoro</label>
+          <select class="pomodoro-stopwatch-minutes-dropdown" id="pomodoro-stopwatch-minutes-dropdown">
+            <option value="20">20 min</option>
+            <option value="25" selected>25 min</option>
+            <option value="30">30 min</option>
+            <option value="35">35 min</option>
+            <option value="40">40 min</option>
+            <option value="45">45 min</option>
+          </select>
+        </div>        
+        <div class="pomodoro-stopwatch-short-break" id="pomodoro-stopwatch-short-break">
+          <label for="pomodoro-stopwatch-short-break">Descanso corto</label>
+          <div class="pomodoro-stopwatch-short-break-options">
+            <label>
+              <input type="radio" name="short-break-option" value="5" checked>
+              5 min
+            </label>
+            <label>
+              <input type="radio" name="short-break-option" value="10">
+              10 min
+            </label>
+          </div>
+        </div>
+        <div class="pomodoro-stopwatch-long-break" id="pomodoro-stopwatch-long-break">
+          <label for="pomodoro-stopwatch-long-break">Descanso largo</label>
+          <select class="pomodoro-stopwatch-long-break-select" id="pomodoro-stopwatch-long-break-select">
+            <option value="15" selected>15 min</option>
+            <option value="20">20 min</option>
+            <option value="25">25 min</option>
+            <option value="30">30 min</option>
+          </select>
+        </div>
+      </fieldset>      
+      </div>        
     </article>
   </section>
 
@@ -228,7 +275,7 @@
             <p>Devolver tareas</p>
           </li>
           <li class="focus-on-element" id="start-tasks-button">
-            <img src="icons/icons8-play-icon-32.png">
+            <img src="icons/icons8-start-tasks-icon-32.png">
             <p>Iniciar tareas</p>
           </li>
         </ul>

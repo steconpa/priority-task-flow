@@ -132,7 +132,131 @@ p.current-date {
 }
 
 .pomodoro-segment {
-  display: none; /* Oculta inicialmente el textarea */
+  display: none;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.pomodoro-segment.visible {
+  display: block;
+  opacity: 1;
+}
+
+.description-task-in-progress {
+  text-align: center;
+  font-size: 24px;
+  color: var(--color-blueprincipal);
+}
+
+.pomodoro-stopwatch-settings {
+  margin: 5px 20px;
+  padding: 10px;
+  border: 1px solid var(--color-bluesecundary);
+  border-radius: 5px;
+  background-color: var(--color-bluesecundary);
+}
+
+fieldset.pomodoro-stopwatch-settings-tittle {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  column-gap: 1.5em;
+  padding: 10px;
+  border: none;
+}
+
+.pomodoro-stopwatch-settings-tittle legend {
+  margin: 0px;
+  font-weight: bold;
+  font-size: 1em;
+  color: var(--color-blueprincipal);
+}
+
+fieldset.pomodoro-stopwatch-settings-tittle > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+fieldset.pomodoro-stopwatch-settings-tittle > div > label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: small;
+  color: var(--color-blueprincipal);
+
+}
+
+.pomodoro-stopwatch-minutes-dropdown,
+.pomodoro-stopwatch-long-break-select {
+  font-size: small;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.pomodoro-stopwatch-short-break-options label {
+  display: inline-block;
+  font-size: small;
+  margin-right: 10px;
+  font-weight: normal;
+}
+
+.pomodoro-stopwatch-short-break-options label input[type="radio"] {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+#pomodoro-stopwatch-display-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 10px;
+}
+
+#pomodoro-stopwatch-display {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#pomodoro-stopwatch-display-label {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: var(--color-blueprincipal);
+}
+
+#pomodoro-stopwatch-display-input {
+  font-size: 48px;
+  text-align: center;
+  width: 120px;
+  height: 60px;
+  padding: 5px;
+  border: none;
+  background-color: transparent;
+}
+
+.pomodoro-stopwatch-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 20px;
+}
+
+.pomodoro-stopwatch-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.pomodoro-stopwatch-button img {
+  width: 32px;
+  height: 32px;
+}
+
+.pomodoro-stopwatch-button:hover {
+  opacity: 0.7;
 }
 
 sidebar {
@@ -355,15 +479,14 @@ main {
   border-right: 1px solid var(--color-blueprincipal);
 }
 
-.tab-element:hover,
-.tab-element.active:hover {
+.tab-element:hover{
   background-color: var(--color-blueprincipal);
   color: var(--color-bluesecundary);
 }
 
 .tab-element.active {
-  background-color: white;
-  border-bottom: 2px solid var(--color-blueprincipal);
+  background-color: var(--color-blueprincipal);
+  color: var(--color-bluesecundary);
 }
 
 details summary {
