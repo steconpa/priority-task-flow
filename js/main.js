@@ -124,115 +124,6 @@ class DueDate {
   }
 }
 
-class Pomodoro {
-  constructor(duration) {
-    this._duration = duration;
-    this._startTime = this.start(duration);
-    this._endTime = null;
-    this._completed = false;
-    this._interruptions = [];
-  }
-
-  get duration() {
-    return this._duration;
-  }
-
-  get startTime() {
-    return this._startTime;
-  }
-
-  get endTime() {
-    return this._endTime;
-  }
-
-  get completed() {
-    return this._completed;
-  }
-
-  get interruptions() {
-    return this._interruptions;
-  }
-
-  start(duration) {
-    this._duration = duration;
-    this._startTime = new Date();
-    this._endTime = new Date(this._startTime.getTime() + this._duration * 60000);
-  }
-
-  complete() {
-    this._completed = true;
-  }
-  
-  isRunning() {
-    return this._startTime !== null && !this._completed;
-  }
-
-  pause() {
-    if (this.isRunning()) {
-      const interruptionStartTime = new Date();
-      this._interruptions.push({ start: interruptionStartTime });
-      this._endTime = interruptionStartTime;
-    }
-  }
-  
-  isPaused() {
-    return this._interruptions.length > 0;
-  }
-
-  resume() {
-    if (this.isPaused()) {
-      const interruptionEndTime = new Date();
-      const lastInterruption = this._interruptions[this._interruptions.length - 1];
-      lastInterruption.end = interruptionEndTime;
-      this._endTime = new Date(this._endTime.getTime() + (interruptionEndTime - lastInterruption.start));
-    }
-  }
-
-  isExpired() {
-    return this.getTimeRemaining() === 0;
-  }
-
-  getElapsedTime() {
-    const currentTime = new Date();
-    return currentTime - this._startTime;
-  }
-
-  getRemainingTimeFormatted() {
-    const remainingTime = this.getTimeRemaining();
-    const minutes = Math.floor(remainingTime / 60000);
-    const seconds = Math.floor((remainingTime % 60000) / 1000);
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  }
-
-  reset() {
-    this._startTime = null;
-    this._endTime = null;
-    this._completed = false;
-    this._interruptions = [];
-  }
-
-  getFormattedStartTime() {
-    return this._startTime.toLocaleString();
-  }
-
-  getFormattedEndTime() {
-    return this._endTime.toLocaleString();
-  }
-
-  getTimeRemaining() {
-    if (this.isRunning()) {
-      const currentTime = new Date();
-      const remainingTime = this._endTime - currentTime;
-      return remainingTime > 0 ? remainingTime : 0;
-    }
-    return 0;
-  }
-
-  toString() {
-    return this.getRemainingTimeFormatted();
-  }
-}
-
 class PomodoroTimer {
   constructor(minPomodoro, minShortBreak, minLongBreak) {
     this.workDuration = minPomodoro;
@@ -315,13 +206,6 @@ class PomodoroTimer {
   }
 }
 
-
-// Evento de clic para iniciar la sesión de trabajo
-/*const startWorkButton = document.getElementById('start-work-button');
-startWorkButton.addEventListener('click', () => {
-  pomodoroTimer.startWorkSession();
-});*/
-
 // Evento de clic para pausar el temporizador
 /* const pauseButton = document.getElementById('pause-button');
 pauseButton.addEventListener('click', () => {
@@ -347,6 +231,7 @@ startLongBreakButton.addEventListener('click', () => {
 }); */
 
 let toDoListTasks = [];
+let pomodoroTimer = {};
 
 // Obtener la fecha actual
 const currentDate = new Date();
@@ -843,24 +728,68 @@ function showPomodoroSegment() {
   segment.classList.add('visible');
 }
 
-function handleStartTasks() {
-  const descripTaskInProgress = document.getElementById('description-task-in-progress');
-  showPomodoroSegment();
-  const taskInProgress = getTaskOnFocusList();
-
-  const task = taskInProgress[0];
-  task.inProgress = true;
-  descripTaskInProgress.dataset.taskId = task.id;
-  descripTaskInProgress.textContent = task.description;
+function createTaskInProgress(task) {
+  const taskInProgress = document.getElementById('description-task-in-progress');
+  taskInProgress.dataset.taskId = task.id;
+  taskInProgress.textContent = task.description;
 }
 
-function pomodoroTimer() {
-  const minPomodoro = document.getElementById('pomodoro-stopwatch-minutes-dropdown').value;
-  const minShortBreak = document.querySelector('input[name="short-break-option"]:checked').value;
-  const minLongBreak = document.getElementById('pomodoro-stopwatch-long-break-select').value;
+function handleStartTasks() {
+  const tasksInProgress = getTaskOnFocusList();
+  showPomodoroSegment();
+  pomodoroTimerFunction();
+
+  tasksInProgress.forEach(element => {
+    element.inProgress = true;
+    createTaskInProgress(element);
+
+  });
+}
+
+function formatTimePomodoroDisplay(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secondsLeft = seconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(secondsLeft).padStart(2, '0')}`;
+}
+
+function startPomodoroTimer () {
+  const timerDisplay = document.getElementById('pomodoro-stopwatch-display-input');
+  const typeSession = timerDisplay.dataset.typeSession;
+  pomodoroTimer.startWorkSession();
   
-  const pomodoroTimer = new PomodoroTimer(minPomodoro, minShortBreak, minLongBreak);
-  console.log(pomodoroTimer);
+  let timeLeft = parseInt (pomodoroTimer[typeSession]) * 60;
+
+  const timer = setInterval(() => {
+    timeLeft--;
+    timerDisplay.value = formatTimePomodoroDisplay(timeLeft);
+
+    if (timeLeft === 0) {
+      clearInterval(timer);
+      pomodoroTimer.sessionsCompleted++;
+      if (typeSession === 'workDuration') {
+        timerDisplay.dataset.typeSession = 'shortBreakDuration';
+        pomodoroTimer.startShortBreak();
+      } else if (typeSession === 'shortBreakDuration') {
+        timerDisplay.dataset.typeSession = 'workDuration';
+        pomodoroTimer.startWorkSession();
+      }
+      return;
+    }
+  }, 1000);
+}
+
+function pomodoroTimerFunction() {
+  //valores predeterminados del pomodoro en la sección de configuración
+  const minPomodoro = parseInt(document.getElementById('pomodoro-stopwatch-minutes-dropdown').value);
+  const minShortBreak = parseInt(document.querySelector('input[name="short-break-option"]:checked').value);
+  const minLongBreak = parseInt(document.getElementById('pomodoro-stopwatch-long-break-select').value);
+  const dataTypeSesion = document.getElementById('pomodoro-stopwatch-display-input');
   
+  pomodoroTimer = new PomodoroTimer(minPomodoro, minShortBreak, minLongBreak);
+  dataTypeSesion.value = formatTimePomodoroDisplay(minPomodoro * 60);
+  dataTypeSesion.dataset.typeSession = 'workDuration';
+
+  const startTasksButton = document.getElementById('pomodoro-stopwatch-play-button');
+  startTasksButton.addEventListener('click', startPomodoroTimer);
 }
 
