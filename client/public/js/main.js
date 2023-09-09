@@ -742,7 +742,7 @@ function handleStartTasks() {
   tasksInProgress.forEach(element => {
     element.inProgress = true;
     createTaskInProgress(element);
-
+//
   });
 }
 
