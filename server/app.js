@@ -3,11 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
-import { connectDB } from './db.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-// Importa las rutas
+import { connectDB } from './db.js';
 import indexRoutes from './routes/index.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,6 +24,11 @@ app.use(cors());
 // Middleware para analizar JSON en las solicitudes
 app.use(express.json());
 
+// Configurar vistas y directorio público
+    //app.set('view engine', 'pug');
+    //app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, '../client/public')));
+
 // Llama a la función de conexión a la base de datos desde db.js
 connectDB();
 
@@ -33,11 +37,11 @@ app.use('/', indexRoutes);
 
 // Middleware de manejo de errores para rutas no encontradas (404)
 app.use((req, res, next) => {
-    const indexPath = path.join(__dirname, '..', 'client', 'public', '404.html');
-    res.status(404).sendFile(indexPath, (err) => {
+    const indexPath = path.join(__dirname, '../client/public', '404.html');
+    res.sendFile(indexPath, (err) => {
         if (err) {
             console.error('Error al enviar el archivo:', err);
-            res.status(500).send('Error al cargar la página 404');
+            res.status(404).send('Error al cargar la página 404');
         }
     });
   });
