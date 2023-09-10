@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { registerUser } from '../controllers/auth.controller.js';
+import { loginUser } from '../controllers/login.controller.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,6 +25,9 @@ router.get('/', (req, res) => {
 
 // Ruta para el registro de usuarios
 router.get('/register', registerUser);
+
+// Ruta para iniciar sesión
+router.post('/login', loginUser);
 
 router.get('/tareas', (req, res) => {
   // Lógica para la ruta '/tareas'

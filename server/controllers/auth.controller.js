@@ -1,6 +1,5 @@
-import User from '../models/User.js';
-import Role from '../models/Roles.js';
-import bcrypt from 'bcrypt';
+import { User } from '../models/index.js';
+import { checkEmailExistence, hashPassword, getDefaultRole } from '../utils/userHelpers.js';
 
 // Controlador para registrar un nuevo usuario
 export const registerUser = async (req, res) => {
@@ -9,17 +8,16 @@ export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     // Verificar si el correo electrónico ya está registrado
-    const existingUser = await User.findOne({ email });
+    const existingUser = await checkEmailExistence(email);
     if (existingUser) {
       return res.status(400).json({ message: 'El correo electrónico ya está registrado.' });
     }
 
     // Generar un hash de la contraseña
-    const saltRounds = 10; // Número de rondas de sal (puedes ajustarlo)
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await hashPassword(password);
 
     // Consultar el rol predeterminado (por ejemplo, "user")
-    const defaultRole = await Role.findOne({ roleName: 'user' });
+    const defaultRole = await getDefaultRole();
 
     // Crear un nuevo usuario con el rol predeterminado "user"
     const newUser = new User({
