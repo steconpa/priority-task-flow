@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { config } from "dotenv";
 
 import { connectDB } from './db.js';
 import indexRoutes from './routes/index.routes.js';
@@ -13,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Configura las variables de entorno desde el archivo .env
-dotenv.config();
+config();
 
 // Crea una instancia de Express
 const app = express();

@@ -28,8 +28,6 @@ export const loginUser = async (req, res) => {
 
     // Verifica que el rol del usuario sea "user"
     const defaultRole = await getDefaultRole();
-    console.log(typeof user.role, user.role);
-    console.log(typeof defaultRole._id, defaultRole._id);
 
     if (user.role.toString() !== defaultRole._id.toString()) {
         return res.status(403).json({ message: 'Acceso no autorizado.' });
