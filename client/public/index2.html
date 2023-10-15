@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Priority Task Flow es una incleible aplicación de gestión de tareas diseñada para ayudarte a priorizar, organizar y mantener el enfoque en tus actividades diarias. Con una interfaz intuitiva y practica, Priority Task Flow te permite optimizar tu productividad y alcanzar tus objetivos de manera eficiente." />
+  <meta property="og:title" content="Priority Task Flow" />
+  <meta property="og:description" content="Prioriza, organiza, concéntrate y que todo fluya con Priority Task Flow" />
+  <meta property="og:image" content="images/ogImage.png" />
+  <meta name="author" content="Stevens Contreras" />
+  <meta name="email" content="stevens.contreras@uniminuto.edu.co" />
+  <meta name="profile" content="https://github.com/steconpa" />
+
+  <link rel="icon" href="icons/favicon.png" type="image/png" />
+  <link rel="shortcut icon" href="icons/favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Indie+Flower&&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/normalize.css" />
+
+  <title>Priority Task Flow</title>
+</head>
+
+<body>
+  <header class="header-curved" id="header-curved" role="banner">
+
+    <h1 class="principal-tittle">
+      <a id="img-logo" href="index.html">
+        <img src="/icons/logo-flow.png" alt="Priority Task Flow" />
+      </a>
+      Priority Task Flow
+    </h1>
+
+    <nav>
+      <ul class="principal-menu" id="principal-menu" role="menu">
+        <li role="menuitem">
+          <a href="#add-task-section" alt="Agregue tareas">
+            Agregue
+          </a>
+        </li>
+        <li>
+          <img src="icons/circulo-blanco-16.png">
+        </li>
+        <li role="menuitem">
+          <a href="#priority-sort-section" alt="Clasifique las tareas">
+            Clasifique
+          </a>
+        </li>
+        <li>
+          <img src="icons/circulo-blanco-16.png">
+        </li>
+        <li role="menuitem">
+          <a href="#focus-on-section" alt="Priorice las tareas">
+            Priorice
+          </a>
+        </li>
+        <li>
+          <img src="icons/circulo-blanco-16.png">
+        </li>
+        <li role="menuitem">
+          <a href="#focus-on-section" alt="Enfoquese en seis tareas">
+            Enfoquese
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="task-in-progress">
+    <p class="current-date" id="current-date"></p>
+    <article class="pomodoro-segment">
+      <h2 class="description-task-in-progress" data-task-id="" 
+        id="description-task-in-progress">
+        Tarea de ejemplo
+      </h2>
+      <div class="pomodoro-stopwatch-display-container" id="pomodoro-stopwatch-display-container">
+        <div class="pomodoro-stopwatch-display" id="pomodoro-stopwatch-display">
+          <label for="pomodoro-stopwatch-display-label">Tiempo restante</label>
+          <input type="text" class="pomodoro-stopwatch-display-input" id="pomodoro-stopwatch-display-input"
+          value="0" data-type-pomodoro-session="" disabled></input>
+        </div>
+      </div>
+      <div class="pomodoro-stopwatch-buttons" id="pomodoro-stopwatch-buttons">
+        <button class="pomodoro-stopwatch-button" id="pomodoro-stopwatch-play-button">
+          <img src="icons/icons8-play-icon-32.png" alt="Iniciar" />
+        </button>
+        <button class="pomodoro-stopwatch-button" id="pomodoro-stopwatch-pause-button">
+          <img src="icons/icons8-pause-icon-32.png" alt="Pausar" />
+        </button>
+        <button class="pomodoro-stopwatch-button" id="pomodoro-stopwatch-stop-button">
+          <img src="icons/icons8-stop-icon-32.png" alt="Detener" />
+        </button>
+        <button class="pomodoro-stopwatch-button" id="pomodoro-stopwatch-checked-button">
+          <img src="icons/icons8-checked-icon-32.png" alt="Detener" />
+        </button>
+      </div>
+      <div class="pomodoro-stopwatch-settings" id="pomodoro-stopwatch-settings">
+        <fieldset class="pomodoro-stopwatch-settings-tittle">
+          <legend>Configuración:</legend>
+          <div class="pomodoro-stopwatch-minutes" id="pomodoro-stopwatch-minutes">
+          <label for="pomodoro-stopwatch-minutes">Pomodoro</label>
+          <select class="pomodoro-stopwatch-minutes-dropdown" id="pomodoro-stopwatch-minutes-dropdown">
+            <option value="20">20 min</option>
+            <option value="25" selected>25 min</option>
+            <option value="30">30 min</option>
+            <option value="35">35 min</option>
+            <option value="40">40 min</option>
+            <option value="45">45 min</option>
+          </select>
+        </div>        
+        <div class="pomodoro-stopwatch-short-break" id="pomodoro-stopwatch-short-break">
+          <label for="pomodoro-stopwatch-short-break">Descanso corto</label>
+          <div class="pomodoro-stopwatch-short-break-options">
+            <label>
+              <input type="radio" name="short-break-option" value="5" checked>
+              5 min
+            </label>
+            <label>
+              <input type="radio" name="short-break-option" value="10">
+              10 min
+            </label>
+          </div>
+        </div>
+        <div class="pomodoro-stopwatch-long-break" id="pomodoro-stopwatch-long-break">
+          <label for="pomodoro-stopwatch-long-break">Descanso largo</label>
+          <select class="pomodoro-stopwatch-long-break-select" id="pomodoro-stopwatch-long-break-select">
+            <option value="15" selected>15 min</option>
+            <option value="20">20 min</option>
+            <option value="25">25 min</option>
+            <option value="30">30 min</option>
+          </select>
+        </div>
+      </fieldset>      
+      </div>        
+    </article>
+  </section>
+
+  <sidebar>
+    <section id="add-task-section" class="add-task-section">
+      <h2 class="h2-tittle-section">Agregue</h2>
+
+      <form id="add-task-form" class="add-task-form" action="">
+        <textarea id="new-task-input" rows="3" placeholder="Nueva tarea" maxlength="250" required></textarea>
+        <div>
+          <button type="submit" class="add-new-task-button" name="add-new-task-button">
+            Aceptar
+          </button>
+        </div>
+      </form>
+
+      <form id="update-task-form" class="update-task-form" action="">
+        <textarea id="update-task-input" rows="3" maxlength="250" data-task-id="0"></textarea>
+        <div>
+          <button type="submit" class="update-task-button" name="update-task-button">
+            Aceptar
+          </button>
+          <button type="submit" class="delete-task-button" name="delete-task-button">
+            Eliminar
+          </button>
+        </div>
+      </form>
+    </section>
+    <section id="classify-task-section" class="classify-task-section">
+      <h2 class="h2-tittle-section">Clasifique</h2>
+      <ul id="uncategorized-to-do-list" role="list">
+
+      </ul>
+    </section>
+  </sidebar>
+
+  <main>
+    <nav>
+      <ul class="tab-menu">
+        <li class="tab-element active" data-target="priority-sort-section">
+          Priorice
+        </li>
+        <li class="tab-element" data-target="focus-on-section">
+          Enfoquese en 6
+        </li>
+      </ul>
+    </nav>
+
+    <section id="priority-sort-section" class="priority-sort-section">
+
+      <details id="red-to-do-list-details">
+        <summary class="red-to-do-list-summary" aria-expanded="false" aria-controls="red-to-do-list">
+          importante + urgente <span></span>
+        </summary>
+
+        <table class="red-to-do-list-table" id="red-to-do-list-table">
+          <thead>
+            <tr>
+              <th>Priorizar</th>
+              <th>Tarea</th>
+              <th>Fecha limite</th>
+              <th>Reclasificar</th>
+            </tr>
+          </thead>
+          <tbody class="red-to-do-list" id="red-to-do-list">
+          
+          </tbody>
+        </table>
+      </details>
+
+      <details id="orange-to-do-list-details">
+        <summary class="orange-to-do-list-summary" aria-expanded="false" aria-controls="orange-to-do-list">
+          importante + no urgente <span></span>
+        </summary>
+        <table class="orange-to-do-list-table" id="orange-to-do-list-table">
+          <thead>
+            <tr>
+              <th>Priorizar</th>
+              <th>Tarea</th>
+              <th>Fecha limite</th>
+              <th>Reclasificar</th>
+            </tr>
+          </thead>
+          <tbody class="orange-to-do-list" id="orange-to-do-list">
+          
+          </tbody>
+        </table>
+      </details>
+
+      <details id="yellow-to-do-list-details" aria-expanded="false" aria-controls="yellow-to-do-list">
+        <summary class="yellow-to-do-list-summary">
+          no importante + urgente <span></span>
+        </summary>
+        <table class="yellow-to-do-list-table" id="yellow-to-do-list-table">
+          <thead>
+            <tr>
+              <th>Priorizar</th>
+              <th>Tarea</th>
+              <th>Fecha limite</th>
+              <th>Reclasificar</th>
+            </tr>
+          </thead>
+          <tbody class="yellow-to-do-list" id="yellow-to-do-list">
+          
+          </tbody>
+        </table>
+      </details>
+
+      <details id="blue-to-do-list-details">
+        <summary class="blue-to-do-list-summary" aria-expanded="false" aria-controls="blue-to-do-list">
+          no importante + no urgente <span></span>
+        </summary>
+        <table class="blue-to-do-list-table" id="blue-to-do-list-table">
+          <thead>
+            <tr>
+              <th>Priorizar</th>
+              <th>Tarea</th>
+              <th>Fecha limite</th>
+              <th>Reclasificar</th>
+            </tr>
+          </thead>
+          <tbody class="blue-to-do-list" id="blue-to-do-list">
+          </tbody>
+        </table>
+      </details>
+    </section>
+
+    <section id="focus-on-section" name="focus-on-section">
+      <nav>
+        <ul class="focus-on-menu">
+          <li class="focus-on-element" id="take-on-six-tasks-button">
+            <img src="icons/icons8-download-32.png">
+            <p>Traer tareas</p>
+          </li>
+          <li class="focus-on-element" id="return-six-tasks-button">
+            <img src="icons/icons8-go-back-icon-32.png">
+            <p>Devolver tareas</p>
+          </li>
+          <li class="focus-on-element" id="start-tasks-button">
+            <img src="icons/icons8-start-tasks-icon-32.png">
+            <p>Iniciar tareas</p>
+          </li>
+        </ul>
+      </nav>
+      <ul id="focus-on-six-list"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Elaborado por Stevens Contreras &nbsp;</p>
+    <p>
+      <a href="https://www.linkedin.com/in/stecop" target="_blank">
+        <img src="icons/icons8-linkedin-96.png" alt="Enlace a mi perfil de LinkedIn" /></a>
+      <a href="https://github.com/steconpa" target="_blank">
+        <img src="icons/icons8-github-96.png" alt="Enlace a mi perfil de GitHub" /></a>
+    </p>
+    <p>
+      Iconos de la página tomados de
+      <a href="https://icons8.com/" target="_blank">Icon8</a>
+    </p>
+  </footer>
+
+  <template id="new-uncategorized-task-template">
+    <li class="task-element-item">
+      <span class="task-description" data-task-id=""></span>
+      <div class="category-buttons">
+        <button type="button" class="circle-button-16 button-assign-task-red-list" 
+          data-tooltip="Importante y urgente" value="red-to-do-list" 
+          data-task-id="">
+        </button>
+        <button type="button" class="circle-button-16 button-assign-task-orange-list" 
+          value="orange-to-do-list" data-tooltip="Importante pero no urgente"
+          data-task-id="">
+        </button>
+        <button type="button" class="circle-button-16 button-assign-task-yellow-list" 
+          value="yellow-to-do-list" data-tooltip="No es importante pero si urgente"
+          data-task-id="">
+        </button>
+        <button type="button" class="circle-button-16 button-assign-task-blue-list"
+          value="blue-to-do-list" data-tooltip="No es importante ni urgente"
+          data-task-id="">
+        </button>
+      </div>
+    </li>
+  </template>
+
+  <template id="task-row-item">
+    <tr class="task-element-item" data-task-id="">
+      <td class="task-position">
+        <button class="move-up-task-position-button" data-task-id=""
+         data-tooltip="Mover hacia arriba">
+         <img src="icons/icons8-arriba-16.png">
+        </button>
+      </td>
+      <td class="task-description" data-task-id="">Tarea 1</td>
+      <td class="task-due-date">
+        <input type="date" class="task-due-date-input" data-task-id="">
+      </td>
+      <td class="task-recategory-buttons">
+        <button type="button" class="circle-button-16 button-assign-task-red-list" 
+          data-tooltip="Importante y urgente" value="red-to-do-list" 
+          data-task-id="">
+        </button>
+        <button type="button" class="circle-button-16 button-assign-task-orange-list" 
+          value="orange-to-do-list" data-tooltip="Importante pero no urgente"
+          data-task-id="">
+        </button>
+        <button type="button" class="circle-button-16 button-assign-task-yellow-list" 
+          value="yellow-to-do-list" data-tooltip="No es importante pero si urgente"
+          data-task-id="">
+        </button>
+        <button type="button" class="circle-button-16 button-assign-task-blue-list"
+          value="blue-to-do-list" data-tooltip="No es importante ni urgente"
+          data-task-id="">
+        </button>
+      </td>
+    </tr>
+  </template>
+
+  <template id="focus-on-template">
+    <li class="task-element-item" data-task-id="">
+    </li>
+  </template>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

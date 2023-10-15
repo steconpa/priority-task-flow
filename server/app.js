@@ -1,14 +1,14 @@
 // Importa los módulos necesarios
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { config } from "dotenv";
 
 import { connectDB } from './db.js';
-import indexRoutes from './routes/index.routes.js';
+
+import router from './routes/index.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, '../client/public')));
 connectDB();
 
 // Rutas de la API
-app.use('/', indexRoutes);
+app.use('/', router);
 
 // Middleware de manejo de errores para rutas no encontradas (404)
 app.use((req, res, next) => {

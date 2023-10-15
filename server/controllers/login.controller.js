@@ -15,13 +15,8 @@ export const loginUser = async (req, res) => {
     }
 
     // Compara la contraseña proporcionada con la contraseña almacenada en la base de datos
-    console.log(typeof password, password);
-    console.log(typeof user.password, user.password);
-
     const passwordMatch = await bcrypt.compare(password, user.password);
     
-    console.log(passwordMatch);
-
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Credenciales inválidas.' });
     }
@@ -34,7 +29,15 @@ export const loginUser = async (req, res) => {
       }
 
     // Genera un token de acceso
-    const token = jwt.sign({ userId: user._id, userEmail: user.email }, 'secreto', { expiresIn: '1h' });
+    const token = jwt.sign(
+      { 
+        userId: user._id, 
+        userEmail: user.email 
+      }, 
+      process.env.tokenSecret, 
+      { 
+        expiresIn: '1h' 
+      });
 
     // Devuelve el token como respuesta
     res.status(200).json({ token });
