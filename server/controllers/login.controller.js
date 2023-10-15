@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { checkEmailExistence, getDefaultRole} from '../utils/userHelpers.js';
+import { checkEmailExistence, getDefaultRole } from '../utils/userHelpers.js';
 
 export const loginUser = async (req, res) => {
   try {
@@ -16,7 +16,7 @@ export const loginUser = async (req, res) => {
 
     // Compara la contraseña proporcionada con la contraseña almacenada en la base de datos
     const passwordMatch = await bcrypt.compare(password, user.password);
-    
+
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Credenciales inválidas.' });
     }
@@ -25,18 +25,18 @@ export const loginUser = async (req, res) => {
     const defaultRole = await getDefaultRole();
 
     if (user.role.toString() !== defaultRole._id.toString()) {
-        return res.status(403).json({ message: 'Acceso no autorizado.' });
-      }
+      return res.status(403).json({ message: 'Acceso no autorizado.' });
+    }
 
     // Genera un token de acceso
     const token = jwt.sign(
-      { 
-        userId: user._id, 
-        userEmail: user.email 
-      }, 
-      process.env.tokenSecret, 
-      { 
-        expiresIn: '1h' 
+      {
+        userId: user._id,
+        userEmail: user.email
+      },
+      process.env.tokenSecret,
+      {
+        expiresIn: '1h'
       });
 
     // Devuelve el token como respuesta
