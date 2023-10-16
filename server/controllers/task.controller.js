@@ -1,4 +1,4 @@
-import {Task, TaskImportance, TaskStatus} from '../models/index.js';
+import {Task, TaskQuadrant, TaskStatus} from '../models/index.js';
 
 // Método para obtener todas las tareas de un usuario
 const getUserTasks = async (req, res) => {
@@ -17,7 +17,7 @@ const createUserTask = async (req, res) => {
         name,
         description,
         deadline,
-        importance,
+        quadrant,
         tags,
       } = req.body;
   
@@ -25,9 +25,9 @@ const createUserTask = async (req, res) => {
       const userId = req.userId;
   
       // Función para obtener el id de importancia
-      const getImportance = async () => {
-        const importanceObj = await TaskImportance.findOne({ value: importance });
-        return importanceObj ? importanceObj._id : null;
+      const getQuadrant = async () => {
+        const quadrantObj = await TaskQuadrant.findOne({ value: quadrant });
+        return quadrantObj ? quadrantObj._id : null;
       };
   
       // Función para obtener el status predeterminado
@@ -36,8 +36,8 @@ const createUserTask = async (req, res) => {
         return statusObj ? statusObj._id : null;
       };
   
-      const [importanceId, statusId] = await Promise.all([
-        getImportance(),
+      const [quadrantId, statusId] = await Promise.all([
+        getQuadrant(),
         getDefaultStatus(),
       ]);
   
@@ -45,7 +45,7 @@ const createUserTask = async (req, res) => {
         name,
         description,
         deadline,
-        importance: importanceId,
+        quadrant: quadrantId,
         tags,
         userId,
         status: statusId,

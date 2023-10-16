@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { newTaskStatus } from "../controllers/taskStatus.controller.js";
-import { newTaskImportance } from "../controllers/taskImportance.controller.js";
+import { newTaskQuadrant } from "../controllers/taskQuadrant.controller.js";
 
 const router = Router();
 
@@ -8,6 +8,6 @@ const router = Router();
 router.post("/new-task-status", newTaskStatus);
 
 // Ruta para crear un nuevo nivel de importancia
-router.post("/new-task-importance", newTaskImportance);
+router.post("/new-task-quadrant", newTaskQuadrant);
 
 export default router;

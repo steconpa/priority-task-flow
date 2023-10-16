@@ -7,9 +7,9 @@ const taskSchema = new mongoose.Schema({
     },
     description: String,
     deadline: Date,
-    importance: {
+    quadrant: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "TaskImportance",
+        ref: "TaskQuadrant",
         default: 1,
     },
     tags: [String],
@@ -22,10 +22,6 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
-    },
-    dateCreated: {
-        type: Date,
-        default: Date.now,
     },
     dateCompleted: Date,
     }, {

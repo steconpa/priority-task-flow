@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const taskImportanceSchema = new mongoose.Schema({
+const taskQuadrantSchema = new mongoose.Schema({
     value: {
         type: Number,
         integer: true,
@@ -13,31 +13,41 @@ const taskImportanceSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    description: String,
-    action: String,
-    alert: String,
+    description: {
+        type: String,
+        default: null,
+    },
+    action: { 
+        type: String,
+        default: null,
+    },
+    alert: {
+        type: String,
+        default: null,
+    },
     minPercentage: {
         type: Number,
         integer: true,
         min: 0,
         max: 100,
+        default: 0,
     },
     maxPercentage: {
         type: Number,
         integer: true,
         min: 0,
         max: 100,
+        default: 0,
     },
-    dateActivated: {
+    dateDisabled: {
         type: Date,
-        default: Date.now,
-    },
-    dateDisabled: Date,
+        default: null,
+    }
 }, {
     timestamps: true,
     versionKey: false,
 });
 
-const TaskImportance = mongoose.model('TaskImportance', taskImportanceSchema);
+const TaskQuadrant = mongoose.model('TaskQuadrant', taskQuadrantSchema);
 
-export default TaskImportance;
+export default TaskQuadrant;
