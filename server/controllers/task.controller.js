@@ -3,8 +3,22 @@ import {Task, TaskQuadrant, TaskStatus} from '../models/index.js';
 // Método para obtener todas las tareas de un usuario
 const getUserTasks = async (req, res) => {
     try {
-        const tasks = await getUserTasks(req.params.userId);
-        res.status(200).json(tasks);
+        const tasks = await Task.find({ userId: req.userId });
+        // Obtén los datos de quadrant y status
+        const taskDataWithReferences = await Promise.all(tasks.map(async (task) => {
+          const { quadrant, status, userId, ...taskData } = task._doc;
+          const [quadrantData, statusData] = await Promise.all([
+            TaskQuadrant.findById(quadrant),
+            TaskStatus.findById(status),
+          ]);
+          return {
+              ...taskData,
+              quadrant: quadrantData,
+              status: statusData,
+          };
+      }));
+
+      res.status(200).json(taskDataWithReferences);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -24,7 +38,7 @@ const createUserTask = async (req, res) => {
       // Obtiene el id del usuario desde req.userId
       const userId = req.userId;
   
-      // Función para obtener el id de importancia
+      // Función para obtener el id del cuadrante
       const getQuadrant = async () => {
         const quadrantObj = await TaskQuadrant.findOne({ value: quadrant });
         return quadrantObj ? quadrantObj._id : null;
@@ -40,6 +54,15 @@ const createUserTask = async (req, res) => {
         getQuadrant(),
         getDefaultStatus(),
       ]);
+
+      // Verificar la cantidad de tareas "ORG01" antes de crear una nueva tarea
+      const orgTasksCount = await Task.countDocuments({ userId, status:  statusId });
+
+      const orgLimit = 10; // Límite de tareas pendientes sin iniciar
+
+      if (orgTasksCount >= orgLimit) {
+          return res.status(400).json({ message: "Has alcanzado el límite de tareas pendientes por iniciar." });
+      }
   
       const task = new Task({
         name,
@@ -54,7 +77,7 @@ const createUserTask = async (req, res) => {
       // Guarda la tarea en la base de datos
       const newTask = await task.save();
   
-      res.status(201).json(newTask);
+      res.status(201).json({ message: "Tarea creada satisfactoriamente" });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
