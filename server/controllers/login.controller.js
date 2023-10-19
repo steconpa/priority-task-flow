@@ -36,7 +36,7 @@ export const loginUser = async (req, res) => {
       },
       process.env.tokenSecret,
       {
-        expiresIn: '1h'
+        expiresIn: '10h'
       });
 
     // Devuelve el token como respuesta
