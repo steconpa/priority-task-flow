@@ -102,6 +102,29 @@ const getTaskById = async (taskId) => {
   }
 };
 
+//Función para actulizar la fecha limite de una tarea
+const updateUserTaskDeadline = async (req, res) => {
+  try {
+    const taskId = req.params.taskId;
+    const newDeadline = req.body.deadline;
+
+    const task = await Task.findOne({ _id: taskId, userId: req.userId });
+    if (!task) {
+      return res.status(404).json({ message: "Tarea no encontrada" });
+    }
+
+    // Actualiza la fecha límite de la tarea
+    task.deadline = newDeadline;
+
+    // Guarda la tarea actualizada en la base de datos
+    await task.save();
+
+    res.status(200).json('Fecha actulizada satisfactoriamente');
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Método para actualizar una tarea de un usuario
 const updateUserTask = async (req, res) => {
   try {
@@ -129,6 +152,7 @@ const deleteUserTask = async (req, res) => {
 export {
   getUserTasks,
   createUserTask,
+  updateUserTaskDeadline,
   updateUserTask,
   deleteUserTask,
 };

@@ -25,9 +25,7 @@ app.use(cors());
 // Middleware para analizar JSON en las solicitudes
 app.use(express.json());
 
-// Configurar vistas y directorio público
-    //app.set('view engine', 'pug');
-    //app.set('views', path.join(__dirname, 'views'));
+// Configurar directorio público
 app.use(express.static(path.join(__dirname, '../client/public')));
 
 // Llama a la función de conexión a la base de datos desde db.js
