@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { config } from "dotenv";
 config();
 // Configurar la conexión a la base de datos
-const mongoDBURI = process.env.MONGODB_URI;
+const mongoDBURI = `${process.env.MONGODB_URI}&socketTimeoutMS=30000`;
 
 export const connectDB = async () => {
   try {
