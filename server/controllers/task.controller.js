@@ -80,7 +80,10 @@ const createUserTask = async (req, res) => {
     // Guarda la tarea en la base de datos
     const newTask = await task.save();
 
-    res.status(201).json({ message: "Tarea creada satisfactoriamente" });
+    res.status(201).json({
+      message: "Tarea creada satisfactoriamente",
+      task: newTask
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
