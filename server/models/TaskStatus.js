@@ -5,6 +5,7 @@ const taskStatusSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: true,
+    default: 'ORG01',
   },
   name: {
     type: String,

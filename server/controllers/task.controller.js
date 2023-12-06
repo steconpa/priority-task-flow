@@ -3,22 +3,17 @@ import { Task, TaskQuadrant, TaskStatus } from '../models/index.js';
 // Método para obtener todas las tareas de un usuario
 const getUserTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ userId: req.userId });
-    // Obtén los datos de quadrant y status
-    const taskDataWithReferences = await Promise.all(tasks.map(async (task) => {
-      const { quadrant, status, userId, ...taskData } = task._doc;
-      const [quadrantData, statusData] = await Promise.all([
-        TaskQuadrant.findById(quadrant),
-        TaskStatus.findById(status),
-      ]);
-      return {
-        ...taskData,
-        quadrant: quadrantData,
-        status: statusData,
-      };
-    }));
+    // Obtén el id del estado por defecto
+    const defaultStatus = await TaskStatus.findOne({ code: 'ORG01' });
 
-    res.status(200).json(taskDataWithReferences);
+    if (!defaultStatus) {
+      return res.status(500).json({ message: "El estado por defecto no se encuentra en la base de datos." });
+    }
+
+    // Busca todas las tareas del usuario con el estado por defecto
+    const tasks = await Task.find({ userId: req.userId, status: defaultStatus });
+
+    res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -38,20 +33,13 @@ const createUserTask = async (req, res) => {
     // Obtiene el id del usuario desde req.userId
     const userId = req.userId;
 
-    // Función para obtener el id del cuadrante
-    const getQuadrant = async () => {
-      const quadrantObj = await TaskQuadrant.findOne({ value: quadrant });
-      return quadrantObj ? quadrantObj._id : null;
-    };
-
     // Función para obtener el status predeterminado
     const getDefaultStatus = async () => {
       const statusObj = await TaskStatus.findOne({ code: 'ORG01' });
       return statusObj ? statusObj._id : null;
     };
 
-    const [quadrantId, statusId] = await Promise.all([
-      getQuadrant(),
+    const [statusId] = await Promise.all([
       getDefaultStatus(),
     ]);
 
@@ -71,7 +59,7 @@ const createUserTask = async (req, res) => {
       name,
       description: cleanedDescription,
       deadline,
-      quadrant: quadrantId,
+      quadrant,
       tags,
       userId,
       status: statusId,
